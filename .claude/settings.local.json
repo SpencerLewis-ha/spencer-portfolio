@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mv \"Screenshot 2026-06-23 at 4.34.37 PM 1.png\" \"herakify-landing.png\")",
+      "Bash(mv \"Screenshot 2026-06-23 at 4.35.07 PM 1.png\" \"harmony-landing.png\")",
+      "Bash(mv \"Screenshot 2026-06-24 at 11.50.29 AM 1.png\" \"harmony-img-0.png\")",
+      "Bash(mv \"Screenshot 2026-06-24 at 11.51.04 AM 1 \\(1\\).png\" \"harmony-img-1.png\")",
+      "Bash(mv \"Screenshot 2026-06-24 at 11.51.32 AM 1.png\" \"harmony-img-2.png\")",
+      "Bash(python3 *)"
+    ]
+  }
+}
