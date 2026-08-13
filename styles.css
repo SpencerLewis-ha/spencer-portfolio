@@ -1,0 +1,299 @@
+/* ---------------------------------------------------------------- */
+/* Fonts (self-hosted)                                               */
+/* ---------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/instrument-serif-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/archivo-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/archivo-latin-500-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2");
+}
+
+/* ---------------------------------------------------------------- */
+/* Design tokens                                                     */
+/* ---------------------------------------------------------------- */
+
+:root {
+  /* colour */
+  --bone:       #F4EFE6;  /* page background. NEVER substitute white */
+  --bone-deep:  #EAE3D6;  /* image fields, secondary surfaces */
+  --ink:        #1A1613;  /* body text, inverted section backgrounds */
+  --ink-soft:   #3D3630;  /* secondary text */
+  --muted:      #8A8175;  /* metadata, captions, Yakabod accent */
+  --vermillion: #C1392B;  /* primary accent, Multimedia accent */
+  --jade:       #1F5C4A;  /* Harmony accent */
+  --ochre:      #D89B2C;  /* Herakify accent */
+  --border:     #D6CDBE;  /* hairlines, dividers */
+
+  /* spacing — 8px base */
+  --space-2xs:  4px;
+  --space-xs:   8px;
+  --space-s:   16px;
+  --space-m:   24px;
+  --space-l:   48px;
+  --space-xl:  96px;
+  --space-2xl:192px;
+
+  /* radius */
+  --radius-none: 0;
+  --radius-sm:   4px;
+}
+
+/* ---------------------------------------------------------------- */
+/* Reset                                                              */
+/* ---------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+h1, h2, h3,
+p,
+ul,
+figure {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:visited {
+  color: inherit;
+}
+
+body {
+  background: var(--bone);
+  color: var(--ink);
+  font-family: "Archivo", sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+@media (min-width: 768px) {
+  body {
+    font-size: 17px;
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Type scale                                                        */
+/* ---------------------------------------------------------------- */
+
+.display-xl {
+  font-family: "Instrument Serif", serif;
+  font-weight: 400;
+  font-size: 56px;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+}
+
+.display-l {
+  font-family: "Instrument Serif", serif;
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.h1 {
+  font-family: "Instrument Serif", serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.1;
+}
+
+.h2 {
+  font-family: "Instrument Serif", serif;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.h3 {
+  font-family: "Archivo", sans-serif;
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 1.3;
+}
+
+.body-l {
+  font-family: "Archivo", sans-serif;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.body {
+  font-family: "Archivo", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.body-s {
+  font-family: "Archivo", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.label {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.meta {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+@media (min-width: 768px) {
+  .display-xl { font-size: 120px; }
+  .display-l  { font-size: 80px; }
+  .h1         { font-size: 56px; }
+  .h2         { font-size: 36px; }
+  .h3         { font-size: 22px; }
+  .body-l     { font-size: 20px; }
+  .body       { font-size: 17px; }
+  .body-s     { font-size: 15px; }
+}
+
+/* Body copy max width — the "reading column" */
+.reading-column {
+  max-width: 640px;
+}
+
+/* ---------------------------------------------------------------- */
+/* Grid                                                               */
+/* ---------------------------------------------------------------- */
+
+.grid {
+  display: grid;
+  width: 100%;
+  margin-inline: auto;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding-inline: 24px;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(8, 1fr);
+    gap: 20px;
+    padding-inline: 48px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px;
+    padding-inline: 96px;
+    max-width: 1432px; /* 1240px content + 2 × 96px margin */
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Nav                                                                */
+/* ---------------------------------------------------------------- */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  background: var(--bone);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 72px;
+  padding: 0 24px;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    padding: 0 48px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .nav {
+    padding: 0 96px;
+  }
+}
+
+.nav__logo {
+  white-space: nowrap;
+}
+
+.nav__links {
+  display: flex;
+  gap: 32px;
+}
+
+.nav a {
+  position: relative;
+}
+
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 200ms ease-out;
+}
+
+.nav a:hover {
+  color: var(--vermillion);
+}
+
+.nav a:hover::after {
+  transform: scaleX(1);
+}
