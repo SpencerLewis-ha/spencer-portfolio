@@ -523,8 +523,10 @@ body {
 }
 
 .project-mark img {
-  width: 36px;
-  height: 36px;
+  width: auto;
+  height: auto;
+  max-width: 50.4px; /* 90% of the 56px square, sized by the glyph's larger dimension */
+  max-height: 50.4px;
 }
 
 /* ---------------------------------------------------------------- */

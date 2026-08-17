@@ -222,8 +222,11 @@ no gradient. `4px` radius on the container. The image inside sits at 82–88%
 of container height, fully visible, horizontally centred at 42% of container
 width so it straddles the split.
 
-**Project mark** — 48px SVG glyph in `--ink`, sitting on a square of the
-project accent colour. Mark is ~65% of the square with even padding.
+**Project mark** — 56px square of the project accent colour, `--ink` glyph.
+The glyph fills ~90% of the square on its larger dimension, evenly padded and
+optically centred — trim each SVG's viewBox to the glyph's own tight bounds
+rather than relying on a fixed pixel inset, since different glyph shapes need
+different padding to read as visually equal.
 
 **Section marker** — `01 / CHALLENGE`. Numeral in project accent, slash and
 label in `--ink`. JetBrains Mono 11px uppercase, 0.05em.

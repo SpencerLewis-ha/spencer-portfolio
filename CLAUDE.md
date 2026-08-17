@@ -104,17 +104,31 @@ right) · Footer.
   (`width: fit-content; align-items: center`) around both the image and
   caption, so the wrapper shrinks to the image's rendered width and centres
   the caption within it.
+- **Project marks: glyph fills ~90% of the accent square, evenly padded and
+  optically centered.** This is intentionally tighter than build-spec §7's
+  stale "65%" — do not loosen the marks toward that value. Achieved by
+  trimming each SVG's `viewBox` to the glyph's own tight bounding box (via
+  rendered `getBBox()`, expanded by half the stroke width for stroked
+  glyphs — the raw path coordinates alone undercount stroked marks) rather
+  than resizing the accent square: the square's size and position anchor the
+  text column and carry the project accent, so it stays fixed at 56px. CSS
+  then sizes the `<img>` generically for all four marks — `max-width` /
+  `max-height: 50.4px` (90% of 56px) with `width`/`height: auto` — so each
+  glyph's own aspect ratio decides which axis hits the 90% cap and the other
+  scales proportionally, centered by the square's flexbox.
 
 ## Current state (VERIFY with git first)
 
-The homepage is built and has had two fix passes: uppercase two-line name,
+The homepage is built and has had three fix passes: uppercase two-line name,
 jaguar height cap, nav alignment, band gaps, `#work` scroll-margin, a
 hamburger mobile nav with focus handling, a full spacing pass measured
 boundary-by-boundary against `homepage-layout.png` (see gotchas for the token
 scale gap this surfaced), the nav full-bleed background fix (bone bar now
-spans 100% width via a `.nav__inner` wrapper — see gotchas), and the jaguar
+spans 100% width via a `.nav__inner` wrapper — see gotchas), the jaguar
 caption now centred under the image itself via a `.hero__image-inner`
-wrapper, not just aligned to the column edge. **Run `git log`/`git status` to
+wrapper, not just aligned to the column edge, and the four project marks
+retightened to ~90% glyph fill via trimmed SVG viewBoxes (see gotchas — the
+56px accent square itself did not change). **Run `git log`/`git status` to
 see what is committed versus still in the working tree, and commit anything
 uncommitted before continuing.**
 
