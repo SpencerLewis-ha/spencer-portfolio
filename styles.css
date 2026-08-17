@@ -191,7 +191,7 @@ body {
 }
 
 @media (min-width: 768px) {
-  .display-xl { font-size: 120px; }
+  .display-xl { font-size: clamp(128px, 11vw, 156px); } /* exceeds build-spec's 120px intentionally — see CLAUDE.md */
   .display-l  { font-size: 80px; }
   .h1         { font-size: 56px; }
   .h2         { font-size: 36px; }
@@ -231,8 +231,8 @@ body {
   .grid {
     grid-template-columns: repeat(12, 1fr);
     gap: 24px;
-    padding-inline: 96px;
-    max-width: 1432px; /* 1240px content + 2 × 96px margin */
+    padding-inline: clamp(24px, 4vw, 48px);
+    max-width: 1680px; /* intentionally wider than build-spec's 1240px column — see CLAUDE.md */
   }
 }
 
@@ -251,7 +251,7 @@ body {
 
 .nav__inner {
   width: 100%;
-  max-width: 1432px;
+  max-width: 1680px;
   height: 100%;
   margin-inline: auto;
   display: flex;
@@ -268,7 +268,7 @@ body {
 
 @media (min-width: 1200px) {
   .nav__inner {
-    padding: 0 96px;
+    padding: 0 clamp(24px, 4vw, 48px);
   }
 }
 

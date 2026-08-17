@@ -56,6 +56,31 @@ minimalism.
   82–88% height, centred at 42% width so it straddles the seam.
 - No drop shadows anywhere. Separation comes from the bone-deep fields.
 
+## Intentional divergences from build-spec / Figma (do not "fix" these back)
+
+These are deliberate calls, not drift. If a future check compares against
+`build-spec.md` or the `screenshots/` PNGs and flags one of these, the
+divergence is correct — the source doc is what's stale.
+
+- **Shared container widened:** ~1432px → ~1680px max-width, desktop
+  padding-inline 96px → `clamp(24px, 4vw, 48px)`. Nav (`.nav__inner`) and
+  content (`.grid`) share these same numbers so they move together and stay
+  aligned. 768px and mobile padding are unchanged. Figma's column is 1240px;
+  this is a deliberate widen, not a regression against
+  `homepage-layout.png` — don't narrow it back to match that screenshot.
+  **Body copy stays capped at 640px regardless** (build-spec §3): hero
+  tagline, About paragraphs, band descriptions all use `.reading-column` /
+  their own `max-width: 640px`, decoupled from the container — only
+  structural columns (nav, bands, two-tone fields, section frames) widen.
+- **Hero `display-xl` enlarged:** desktop is now
+  `clamp(128px, 11vw, 156px)`, not build-spec's flat `120px` — Spencer wants
+  the name bigger. Lands ~148px at 1349px, caps at 156px by ~1512px. The
+  `9ch` max-width on `.hero__name` still forces the two-line SPENCER / LEWIS
+  wrap at this size (verified at 390/1349/1512/1680px) since `ch` scales
+  with font-size. Mobile is untouched (still flat `56px`).
+- **Project marks fill ~90% of the accent square**, not build-spec §7's
+  stale "65%" — see Gotchas below for how.
+
 ## Working method (follow this)
 
 1. Small verified steps: build or fix one section, screenshot at 1400 **and**
@@ -83,10 +108,11 @@ right) · Footer.
 
 - **Nav alignment + background:** the nav must be a full-bleed bone bar
   (background spans 100% width) with an **inner wrapper**
-  (`max-width: 1432px; margin-inline: auto`) holding the logo and links. Putting
-  `max-width` on `.nav` itself aligns the logo but shrinks the background box,
-  so the dark About section bleeds through the side margins. Full-bleed bg +
-  constrained inner wrapper fixes both at once.
+  (`max-width: 1680px; margin-inline: auto` — same max-width as `.grid`, kept
+  in sync) holding the logo and links. Putting `max-width` on `.nav` itself
+  aligns the logo but shrinks the background box, so the dark About section
+  bleeds through the side margins. Full-bleed bg + constrained inner wrapper
+  fixes both at once.
 - **Hero name** is uppercase and wraps to two lines (SPENCER / LEWIS) via a
   `ch`-based max-width so the break holds across breakpoints. `text-transform`
   lives on the hero display element.
@@ -116,21 +142,29 @@ right) · Footer.
   `max-height: 50.4px` (90% of 56px) with `width`/`height: auto` — so each
   glyph's own aspect ratio decides which axis hits the 90% cap and the other
   scales proportionally, centered by the square's flexbox.
+- **`clamp(24px, 4vw, 48px)` desktop padding is arithmetically flat at 48px**
+  for the entire range this rule applies to (`≥1200px`): `4vw` only equals
+  48px at exactly 1200px and exceeds it for every wider viewport, so the
+  clamp's max branch wins throughout. This was specified exactly this way —
+  implement it as written, don't "simplify" it to a flat `48px` (the clamp
+  is intentional even though it's non-responsive in practice at this
+  breakpoint) or silently change the breakpoint threshold to make the `4vw`
+  term do something.
 
 ## Current state (VERIFY with git first)
 
-The homepage is built and has had three fix passes: uppercase two-line name,
+The homepage is built and has had four fix passes: uppercase two-line name,
 jaguar height cap, nav alignment, band gaps, `#work` scroll-margin, a
 hamburger mobile nav with focus handling, a full spacing pass measured
-boundary-by-boundary against `homepage-layout.png` (see gotchas for the token
-scale gap this surfaced), the nav full-bleed background fix (bone bar now
-spans 100% width via a `.nav__inner` wrapper — see gotchas), the jaguar
-caption now centred under the image itself via a `.hero__image-inner`
-wrapper, not just aligned to the column edge, and the four project marks
-retightened to ~90% glyph fill via trimmed SVG viewBoxes (see gotchas — the
-56px accent square itself did not change). **Run `git log`/`git status` to
-see what is committed versus still in the working tree, and commit anything
-uncommitted before continuing.**
+boundary-by-boundary against `homepage-layout.png`, the nav full-bleed
+background fix, the jaguar caption centred under the image via a
+`.hero__image-inner` wrapper, the four project marks retightened to ~90%
+glyph fill, and — most recently — the shared container widened to ~1680px
+with a larger `display-xl`. See Gotchas for implementation notes and
+**Intentional divergences from build-spec / Figma** above for what's
+deliberately off-spec and why. **Run `git log`/`git status` to see what is
+committed versus still in the working tree, and commit anything uncommitted
+before continuing.**
 
 Not started: three case study pages, the Multimedia gallery, mobile
 refinement beyond the hamburger, and deploy.
