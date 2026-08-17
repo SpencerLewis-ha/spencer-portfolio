@@ -11,13 +11,20 @@
 </head>
 <body>
   <nav class="nav" aria-label="Primary">
-    <a class="nav__logo meta" href="/">Spencer Lewis</a>
-    <ul class="nav__links">
-      <li><a class="label" href="/">Home</a></li>
-      <li><a class="label" href="/#work">Work</a></li>
-      <li><a class="label" href="/#about">About</a></li>
-      <li><a class="label" href="resume.pdf" target="_blank" rel="noopener">Resume</a></li>
-    </ul>
+    <div class="nav__inner">
+      <a class="nav__logo meta" href="/">Spencer Lewis</a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+      </button>
+      <ul class="nav__links" id="nav-menu">
+        <li><a class="label" href="/">Home</a></li>
+        <li><a class="label" href="/#work">Work</a></li>
+        <li><a class="label" href="/#about">About</a></li>
+        <li><a class="label" href="resume.pdf" target="_blank" rel="noopener">Resume</a></li>
+      </ul>
+    </div>
   </nav>
   <main>
     <section class="hero grid">
@@ -27,8 +34,10 @@
         <p class="hero__meta meta">Product Designer · Washington DC · 2026</p>
       </div>
       <div class="hero__image">
-        <img src="assets/jaguar-vermillion-clean.png" alt="Illustrated jaguar head in vermillion" width="1200" height="1200">
-        <p class="hero__caption meta">Personal Work · Image Editing</p>
+        <div class="hero__image-inner">
+          <img src="assets/jaguar-vermillion-clean.png" alt="Illustrated jaguar head in vermillion" width="1200" height="1200">
+          <p class="hero__caption meta">Personal Work · Image Editing</p>
+        </div>
       </div>
     </section>
 
@@ -151,5 +160,6 @@
       </div>
     </footer>
   </main>
+  <script src="nav.js"></script>
 </body>
 </html>
