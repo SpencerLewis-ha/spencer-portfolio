@@ -394,7 +394,7 @@ body {
 
 .hero {
   padding-block: var(--space-l) var(--space-2xl);
-  row-gap: var(--space-l);
+  row-gap: 28px; /* tightened for the stacked layout so text and jaguar read as one block */
 }
 
 .hero__intro {
@@ -409,12 +409,20 @@ body {
 
 .hero__tagline {
   margin-top: var(--space-m);
+  font-size: 22px; /* larger than .body-l's 17px — see CLAUDE.md intentional divergences */
+}
+
+@media (min-width: 768px) {
+  .hero__tagline {
+    font-size: 28px;
+  }
 }
 
 .hero__meta {
   margin-top: var(--space-m);
   color: var(--muted);
   text-transform: uppercase;
+  font-size: 14px; /* larger than .meta's 12px, at the mono ≤14px ceiling — see CLAUDE.md */
 }
 
 .hero__image {
@@ -437,16 +445,21 @@ body {
   .hero {
     align-items: start;
     padding-block: 196px 193px; /* measured: nav→name gap, hero→"Selected Work" gap */
+    /* capped tracks instead of 12-col fractions: at 1680px, 6/12-column spans leave a
+       growing dead gap between text and jaguar since neither fills its fractional
+       share. Capping intro/image and letting a trailing 1fr track absorb the extra
+       width keeps the pair grouped together regardless of container width. */
+    grid-template-columns: minmax(0, 680px) minmax(0, 420px) 1fr;
   }
 
   .hero__intro {
-    grid-column: 1 / 7;
+    grid-column: 1 / 2;
   }
 
   .hero__image {
-    grid-column: 7 / 13;
+    grid-column: 2 / 3;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
   }
 
   .hero__image-inner {
@@ -706,7 +719,8 @@ body {
 
 .about__paragraph {
   margin-top: var(--space-m);
-  max-width: 640px;
+  max-width: 740px; /* wider than the 640px reading-column cap — see CLAUDE.md */
+  font-size: 19px; /* larger than .body's 16px — see CLAUDE.md intentional divergences */
 }
 
 @media (min-width: 768px) {
@@ -735,6 +749,10 @@ body {
   .about__content {
     grid-column: 1 / 7;
     margin-top: 0;
+  }
+
+  .about__paragraph {
+    font-size: 22px;
   }
 }
 

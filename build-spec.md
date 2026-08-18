@@ -266,7 +266,7 @@ All assets live in `/assets`. Exact filenames and placements:
 | `herakify-map.png` | Herakify band, two-tone field |
 | `harmony-match.png` | Harmony band, two-tone field |
 | `yak-hero.png` | Yakabod band, two-tone field |
-| `multimedia-ink.jpg` | Multimedia band, two-tone field |
+| `multimedia-landingpage.png` | Multimedia band, two-tone field (portrait, 1939×2400 — swapped from the landscape `multimedia-ink.jpg` so the band matches the other three) |
 | `portrait.jpg` | About strip |
 
 ### Herakify — accent `--ochre`

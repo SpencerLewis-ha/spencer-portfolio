@@ -68,18 +68,40 @@ divergence is correct — the source doc is what's stale.
   aligned. 768px and mobile padding are unchanged. Figma's column is 1240px;
   this is a deliberate widen, not a regression against
   `homepage-layout.png` — don't narrow it back to match that screenshot.
-  **Body copy stays capped at 640px regardless** (build-spec §3): hero
-  tagline, About paragraphs, band descriptions all use `.reading-column` /
-  their own `max-width: 640px`, decoupled from the container — only
-  structural columns (nav, bands, two-tone fields, section frames) widen.
+  **Body copy stays capped near 640px regardless** (build-spec §3): hero
+  tagline and (future) band descriptions use `.reading-column` /
+  `max-width: 640px`, decoupled from the container — only structural columns
+  (nav, bands, two-tone fields, section frames) widen. **About paragraphs are
+  the one exception**, at `max-width: 740px` — see the About-text entry below,
+  this was a deliberate further widen on top of the container change, not the
+  container leaking into body copy.
 - **Hero `display-xl` enlarged:** desktop is now
   `clamp(128px, 11vw, 156px)`, not build-spec's flat `120px` — Spencer wants
   the name bigger. Lands ~148px at 1349px, caps at 156px by ~1512px. The
   `9ch` max-width on `.hero__name` still forces the two-line SPENCER / LEWIS
   wrap at this size (verified at 390/1349/1512/1680px) since `ch` scales
   with font-size. Mobile is untouched (still flat `56px`).
+- **Hero tagline and meta enlarged**, moving toward ashleyto.com's fuller
+  feel — the name was already big; the tagline and meta read small and left
+  the hero empty. `.hero__tagline`: `.body-l`'s 17px/20px → 22px mobile /
+  28px desktop. `.hero__meta`: `.meta`'s flat 12px → flat 14px (the mono
+  `≤14px` ceiling from build-spec §2 — don't push this further). Both are
+  overrides scoped to the hero classes, not changes to the shared
+  `.body-l` / `.meta` type-scale tokens, so nothing else on the site moved.
+- **About body copy enlarged and widened:** `.about__paragraph`'s `.body`
+  base (16px/17px) → 19px mobile / 22px desktop, `max-width` 640px → 740px.
+  About reads as a statement block, not long-form copy, so the wider
+  measure at this size doesn't hurt readability — kept within build-spec's
+  720–760px guidance for this case. Ink background and portrait unchanged.
 - **Project marks fill ~90% of the accent square**, not build-spec §7's
   stale "65%" — see Gotchas below for how.
+- **Homepage Multimedia band image:** `multimedia-landingpage.png`
+  (portrait, 1939×2400), not `multimedia-ink.jpg` (landscape) — build-spec
+  §8 updated to match. Sized the same way as the other three bands (85%
+  height, centred on the 39/61 seam, `object-fit: contain`) so Multimedia is
+  no longer the odd one out. The Multimedia *gallery page* (not yet built)
+  still lists `multimedia-ink.jpg` for its own section 3 — that's a
+  different placement and wasn't part of this change.
 
 ## Working method (follow this)
 
@@ -150,20 +172,40 @@ right) · Footer.
   is intentional even though it's non-responsive in practice at this
   breakpoint) or silently change the breakpoint threshold to make the `4vw`
   term do something.
-
+- **Hero's fractional grid columns grew a dead gap after the 1680px widen:**
+  `.hero__intro`/`.hero__image` were `grid-column: 1/7` / `7/13` (6-of-12
+  fractions). Fine at 1432px, but at 1680px neither the text (capped by its
+  own content) nor the jaguar (capped by `max-height`) fills its 6-column
+  share, so the empty space between them grew with the container — 282px at
+  1349px up to 588px at 1680px. Swapping `.hero__image` to
+  `justify-content: flex-start` only partly fixed it (anchored the jaguar to
+  its column's start, but the column's start position itself still moves
+  with a fractional split). The real fix: give `.hero` its own
+  `grid-template-columns: minmax(0, 680px) minmax(0, 420px) 1fr` for this
+  row specifically — intro and image get capped tracks, the trailing `1fr`
+  absorbs whatever width is left over on the right. Gap is now a flat 64px
+  at every width from 1349–1680px instead of growing. **Same underlying
+  fix if any other side-by-side pair here starts drifting apart as the
+  container widens further**: check whether it's on fractional
+  `grid-template-columns` (or `%`-based) tracks — those grow with the
+  container even when the content inside them doesn't.
 ## Current state (VERIFY with git first)
 
-The homepage is built and has had four fix passes: uppercase two-line name,
+The homepage is built and has had five fix passes: uppercase two-line name,
 jaguar height cap, nav alignment, band gaps, `#work` scroll-margin, a
 hamburger mobile nav with focus handling, a full spacing pass measured
 boundary-by-boundary against `homepage-layout.png`, the nav full-bleed
 background fix, the jaguar caption centred under the image via a
 `.hero__image-inner` wrapper, the four project marks retightened to ~90%
-glyph fill, and — most recently — the shared container widened to ~1680px
-with a larger `display-xl`. See Gotchas for implementation notes and
-**Intentional divergences from build-spec / Figma** above for what's
-deliberately off-spec and why. **Run `git log`/`git status` to see what is
-committed versus still in the working tree, and commit anything uncommitted
+glyph fill, the shared container widened to ~1680px with a larger
+`display-xl`, and — most recently — the hero text/jaguar gap rebalanced
+(capped grid tracks instead of fractional columns, tighter mobile stacking
+gap), a larger hero tagline/meta and About body copy, and the homepage
+Multimedia band swapped to a portrait image sized like the other three
+bands. See Gotchas for implementation notes and **Intentional divergences
+from build-spec / Figma** above for what's deliberately off-spec and why.
+**Run `git log`/`git status` to see what is committed versus still in the
+working tree, and commit anything uncommitted
 before continuing.**
 
 Not started: three case study pages, the Multimedia gallery, mobile
