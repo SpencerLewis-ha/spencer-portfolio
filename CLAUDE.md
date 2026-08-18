@@ -72,9 +72,10 @@ divergence is correct — the source doc is what's stale.
   tagline and (future) band descriptions use `.reading-column` /
   `max-width: 640px`, decoupled from the container — only structural columns
   (nav, bands, two-tone fields, section frames) widen. **About paragraphs are
-  the one exception**, at `max-width: 740px` — see the About-text entry below,
-  this was a deliberate further widen on top of the container change, not the
-  container leaking into body copy.
+  the one exception**, at `max-width: 800px` (see the About-text entry below
+  for the full history — it's been widened twice) — this was a deliberate
+  further widen on top of the container change, not the container leaking
+  into body copy.
 - **Hero `display-xl` enlarged:** desktop is now
   `clamp(128px, 11vw, 156px)`, not build-spec's flat `120px` — Spencer wants
   the name bigger. Lands ~148px at 1349px, caps at 156px by ~1512px. The
@@ -88,11 +89,19 @@ divergence is correct — the source doc is what's stale.
   `≤14px` ceiling from build-spec §2 — don't push this further). Both are
   overrides scoped to the hero classes, not changes to the shared
   `.body-l` / `.meta` type-scale tokens, so nothing else on the site moved.
-- **About body copy enlarged and widened:** `.about__paragraph`'s `.body`
-  base (16px/17px) → 19px mobile / 22px desktop, `max-width` 640px → 740px.
-  About reads as a statement block, not long-form copy, so the wider
-  measure at this size doesn't hurt readability — kept within build-spec's
-  720–760px guidance for this case. Ink background and portrait unchanged.
+- **About body copy enlarged and widened further, and the layout
+  reworked to hug-right:** `.about__paragraph`'s `.body` base (16px/17px) →
+  21px mobile / 27px desktop (pushed twice now — was 19/22px). `max-width`
+  now 800px (was 640, then 740) — within build-spec's 720–760px guidance
+  bracket but at the top of it, since About reads as a statement block, not
+  long-form copy. The desktop layout changed from a 50/50 column split to
+  `grid-template-columns: minmax(0, 1fr) minmax(280px, 420px)`: text hugs
+  the left edge and grows into whatever space the portrait doesn't need,
+  portrait hugs the right edge of the (now 1680px, matching the site
+  container — was 1240px) `.about__inner`. Gap between them grows with the
+  viewport (80px at 1349px up to 344px at 1680px) since text stops growing
+  at its 800px cap while the track keeps widening — this is the intended
+  "larger gap," not a bug. Ink background and portrait untouched.
 - **Project marks fill ~90% of the accent square**, not build-spec §7's
   stale "65%" — see Gotchas below for how.
 - **Homepage Multimedia band image:** `multimedia-landingpage.png`
@@ -102,6 +111,16 @@ divergence is correct — the source doc is what's stale.
   no longer the odd one out. The Multimedia *gallery page* (not yet built)
   still lists `multimedia-ink.jpg` for its own section 3 — that's a
   different placement and wasn't part of this change.
+- **`assets/harmony-match.png` was replaced** — the old file had solid
+  jade (`#1F5C4A`-ish, baked in at export) filling all four corners of its
+  transparent PNG, which bled onto the bone-deep 39% side of the two-tone
+  field wherever the corners overhung it. New file (same 706×1448
+  dimensions) has genuinely transparent corners, confirmed via
+  `getpixel()` alpha channel before swapping. No CSS changed — the
+  two-tone-field gradient background was already generic and already sat
+  behind the image; the bug was purely in the asset. If any *other* project
+  image ever shows an accent-coloured halo at its corners, check the
+  source PNG's corner alpha first before touching the field CSS.
 
 ## Working method (follow this)
 
@@ -125,6 +144,65 @@ caption) · Selected Work (four bands, alternating image left/right on desktop,
 stacked single-column on mobile — Herakify=ochre, Harmony=jade, Yakabod=muted,
 Multimedia=vermillion) · About strip (inverted `--ink` bg, text left, portrait
 right) · Footer.
+
+## Case study template — reuse this for Harmony and Yakabod
+
+`herakify.html` is the reference implementation of a **generic, reusable
+case-study template**. Building Harmony or Yakabod means copying it and
+swapping content/accent — the CSS underneath (in `styles.css`, the block
+headed "Case study template — reusable for Herakify / Harmony / Yakabod")
+has no Herakify-specific selectors, so it should need zero changes.
+
+**To reskin for a new project:**
+
+1. Copy `herakify.html` → `harmony.html` (or `yakabod.html`).
+2. Change `<main class="case-study" style="--accent: var(--ochre)">` to
+   the new project's accent (`--jade` for Harmony, `--muted` for Yakabod).
+   Every colour in the template — the mark square, section-marker numerals,
+   the `.learned` left border, the feature-bands background, the
+   `.next-project__link` — reads `var(--accent)` and follows automatically.
+3. Swap the mark SVG (`assets/mark-*.svg`), all image `src`/`alt`/
+   `width`/`height`, and every text node. **Transcribe copy directly from
+   the reference screenshot** (`screenshots/harmony-case-study.png` /
+   `yakabod-case-study.png`) — don't paraphrase, per the standing
+   instruction on this project.
+4. Update `.next-project` at the bottom to point to *its* next project
+   (Harmony → Yakabod → Multimedia, presumably — check the reference for
+   the actual sequence build-spec/Figma intends) and give its mark a
+   `style="--accent: var(--jade-or-whatever)"` override like Herakify's
+   does for Harmony's jade mark, so the preview mark shows the *next*
+   project's colour while the rest of the page stays on the *current*
+   project's accent.
+5. Update the homepage's project-band link for that project
+   (`href="/harmony"` etc. already exists in `index.html` — it currently
+   points at a page that doesn't exist yet; once the file is added it
+   resolves automatically via `vercel.json`'s `cleanUrls`).
+6. Re-verify at 1349/1512/1680/390px per the working method below, and
+   confirm the two-tone-field aspect override (`.two-tone-field--intro`,
+   4:5 desktop / square mobile) still reads correctly for that project's
+   hero image aspect ratio — it was tuned against Herakify's phone
+   mockup and hasn't been checked against Harmony's or Yakabod's assets.
+
+**Template sections, top to bottom** (all generic class names, see
+`herakify.html` for the concrete markup): `.case-intro` (back link,
+category tag, mark, title, description, `.two-tone-field--intro` hero
+image) → `.details-strip` (4 hairline cells, self-adapting 1/2/4-column
+via the border-on-every-cell technique — see Gotchas) → `.content-section`
+×2 (Challenge with a supporting `.two-tone-field`, Solution without one —
+add `.content-section--no-field`) → `.feature-bands` (full-bleed accent,
+3× `.feature-band`, add `.feature-band--reverse` to alternate) →
+`.impact` (`.section-marker`, `.metric-block` ×3, `.learned`) →
+`.next-project` (bone-deep background) → the homepage's `.footer`, reused
+as-is.
+
+**Routing:** `vercel.json` has `"cleanUrls": true`, so `herakify.html`
+serves at both `/herakify.html` and `/herakify` (redirecting the former to
+the latter). This wasn't previously configured — the homepage's
+`href="/herakify"` links predate this file existing. Untested against a
+live Vercel deploy in this session (`vercel dev` needs a login this
+environment doesn't have) — confirm clean-URL routing actually resolves
+once this branch is deployed, don't assume the config is sufficient on
+faith alone.
 
 ## Gotchas learned (don't rediscover these)
 
@@ -189,24 +267,73 @@ right) · Footer.
   container widens further**: check whether it's on fractional
   `grid-template-columns` (or `%`-based) tracks — those grow with the
   container even when the content inside them doesn't.
+- **`grid-row: 1` is needed on BOTH items of any reversed/mirrored
+  side-by-side pair**, not just the "normal" ones — this has now bitten
+  `.project-band--reverse`, `.about__image`/`.about__content`, and
+  `.feature-band--reverse` (fixed proactively there, since I knew to look
+  for it this time). Root cause: when the visually-second column has an
+  EARLIER `grid-column` line than the visually-first one (i.e. DOM order
+  and column order disagree), the browser's auto-placement cursor won't
+  place them in the same implicit row. Anything new with a "reverse"
+  modifier needs this from the start — don't wait to discover it.
+- **A shared `class="grid"` on an element you're about to give
+  component-specific `grid-template-columns` will silently fight you.**
+  `.about__inner` had `class="about__inner grid"` from the original build
+  (reusing `.grid`'s responsive column counts). When the About rework gave
+  `.about__inner` its own `grid-template-columns` / `max-width`, the
+  still-present `.grid` class ALSO kept applying its own
+  `padding-inline: clamp(24px, 4vw, 48px)` at 1200px — doubling the inset
+  on top of `.about`'s own padding (measured: portrait sat 96px from the
+  edge instead of the intended 48px). Fix was removing the redundant
+  `grid` class once `.about__inner` had its own complete width/padding
+  system. **Check an element's full class list before debugging a
+  layout-math discrepancy** — a legacy shared class contributing
+  properties you forgot about is a likely culprit.
+- **`fullPage` Playwright screenshots taken right after `page.goto()` can
+  miss `loading="lazy"` images and `.reveal` scroll-triggered content.**
+  Hit this twice this session: (1) the reveal.js IntersectionObserver
+  never fires for sections the test script jumps past (e.g. scrolling
+  straight from top to `scrollHeight` skips everything in between at
+  viewport heights shorter than the page), leaving `.reveal` elements at
+  `opacity: 0` in the final screenshot even though the real site is fine;
+  (2) `portrait.jpg`'s `loading="lazy"` meant it hadn't loaded yet when a
+  same-tick `fullPage` screenshot fired, so it rendered blank. Both looked
+  like real bugs until re-checked. **Always scroll through the full page
+  in small increments (a `for` loop in ~250-400px steps with a short wait
+  each step) before taking a verification screenshot** — don't jump
+  straight to the bottom and back.
+- **Details-strip hairlines that self-adapt to any column count:** give
+  the grid container `border-top` + `border-left`, give every cell
+  `border-right` + `border-bottom`. Adjacent cells' borders then coincide
+  into single hairlines automatically, in both directions, regardless of
+  how many columns wrap per row — no `:nth-child` logic needed even though
+  the column count itself changes at three different breakpoints (1 below
+  480px, 2 from 480–1199px, 4 at ≥1200px).
+
 ## Current state (VERIFY with git first)
 
-The homepage is built and has had five fix passes: uppercase two-line name,
-jaguar height cap, nav alignment, band gaps, `#work` scroll-margin, a
-hamburger mobile nav with focus handling, a full spacing pass measured
-boundary-by-boundary against `homepage-layout.png`, the nav full-bleed
-background fix, the jaguar caption centred under the image via a
-`.hero__image-inner` wrapper, the four project marks retightened to ~90%
-glyph fill, the shared container widened to ~1680px with a larger
-`display-xl`, and — most recently — the hero text/jaguar gap rebalanced
-(capped grid tracks instead of fractional columns, tighter mobile stacking
-gap), a larger hero tagline/meta and About body copy, and the homepage
-Multimedia band swapped to a portrait image sized like the other three
-bands. See Gotchas for implementation notes and **Intentional divergences
-from build-spec / Figma** above for what's deliberately off-spec and why.
-**Run `git log`/`git status` to see what is committed versus still in the
-working tree, and commit anything uncommitted
-before continuing.**
+The homepage has had six fix passes (uppercase two-line name, jaguar
+height cap, nav alignment, band gaps, `#work` scroll-margin, hamburger
+mobile nav, a measured spacing pass, the nav full-bleed fix, jaguar
+caption centring, project marks retightened to ~90%, the container widen
+to ~1680px with a larger `display-xl`, the hero text/jaguar gap rebalance,
+larger hero tagline/meta, and — this session — About pushed larger again
+(21/27px, 800px cap) with a hug-right two-column layout, and the
+Multimedia band's asset swapped to a portrait image). The Harmony band's
+`harmony-match.png` was replaced to fix a jade corner-bleed bug (see
+Intentional divergences). See Gotchas for implementation notes and
+**Intentional divergences from build-spec / Figma** above for what's
+deliberately off-spec and why.
 
-Not started: three case study pages, the Multimedia gallery, mobile
-refinement beyond the hamburger, and deploy.
+**Herakify's case study page is now built** (`herakify.html`) and doubles
+as the reusable template for Harmony and Yakabod — see the "Case study
+template" section above before starting either of those. `vercel.json`
+now exists with `"cleanUrls": true` so `/herakify` resolves; this is
+unverified against a live deploy (see that section's routing note).
+
+**Run `git log`/`git status` to see what is committed versus still in the
+working tree, and commit anything uncommitted before continuing.**
+
+Not started: the Harmony and Yakabod case study pages (template exists,
+content doesn't), the Multimedia gallery, mobile refinement beyond the
+hamburger, and deploy.

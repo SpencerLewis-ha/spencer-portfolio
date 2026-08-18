@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Herakify — Case Study | Spencer Lewis</title>
+  <link rel="preload" href="assets/fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/archivo-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="nav" aria-label="Primary">
+    <div class="nav__inner">
+      <a class="nav__logo meta" href="/">Spencer Lewis</a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+      </button>
+      <ul class="nav__links" id="nav-menu">
+        <li><a class="label" href="/">Home</a></li>
+        <li><a class="label" href="/#work">Work</a></li>
+        <li><a class="label" href="/#about">About</a></li>
+        <li><a class="label" href="resume.pdf" target="_blank" rel="noopener">Resume</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main class="case-study" style="--accent: var(--ochre)">
+    <section class="case-intro grid reveal">
+      <div class="case-intro__content">
+        <a class="case-intro__back label" href="/#work">← Back</a>
+        <p class="case-intro__category label">Mobile / Research-Led</p>
+        <div class="project-mark">
+          <img src="assets/mark-herakify.svg" alt="" width="41" height="37">
+        </div>
+        <h1 class="case-intro__title display-l">Herakify</h1>
+        <p class="case-intro__description body-l reading-column">A museum companion app for the Heraklion Archaeological Museum. I designed an interactive map, personalized quizzes, and an AI chat guide so visitors could find what mattered to them without a guide.</p>
+      </div>
+      <div class="case-intro__field two-tone-field two-tone-field--intro">
+        <img src="assets/herakify-map.png" alt="Herakify interactive wayfinding map on a phone screen" width="808" height="1690" loading="lazy">
+      </div>
+    </section>
+
+    <section class="details-strip grid reveal">
+      <div class="details-strip__cell">
+        <p class="details-strip__label label">Role</p>
+        <p class="details-strip__value meta">Design Intern</p>
+      </div>
+      <div class="details-strip__cell">
+        <p class="details-strip__label label">Platform</p>
+        <p class="details-strip__value meta">iOS</p>
+      </div>
+      <div class="details-strip__cell">
+        <p class="details-strip__label label">Timeline</p>
+        <p class="details-strip__value meta">Summer 2025</p>
+      </div>
+      <div class="details-strip__cell">
+        <p class="details-strip__label label">Tools</p>
+        <p class="details-strip__value meta">Figma, ProtoPie</p>
+      </div>
+    </section>
+
+    <section class="content-section grid reveal">
+      <div class="content-section__text">
+        <p class="section-marker label"><span class="section-marker__num">01</span> / Challenge</p>
+        <h2 class="content-section__heading h2">Challenge</h2>
+        <p class="content-section__body body reading-column">First time visitors were overwhelmed by dense exhibit text and disoriented by a layout they'd never seen. There was no way to shape the visit around what someone was actually interested in, or around the time they had.</p>
+      </div>
+      <div class="content-section__field two-tone-field">
+        <img src="assets/herakify-challenge.png" alt="Museum exhibit case with artifacts, dimly lit" width="498" height="1002" loading="lazy">
+      </div>
+    </section>
+
+    <section class="content-section content-section--no-field grid reveal">
+      <div class="content-section__text">
+        <p class="section-marker label"><span class="section-marker__num">02</span> / Solution</p>
+        <h2 class="content-section__heading h2">Solution</h2>
+        <p class="content-section__body body reading-column">I started with contextual inquiries — 15+ sessions with tourists, local business owners, and UI experts — and built a persona around the visitor who kept showing up: someone who wants to understand what they're looking at, and who hates vague signage, confusing layouts, and crowds. That framing turned into two design problems. How do we improve the museum visit while keeping people off their phones? And how do we personalize without slowing anyone down? Every feature below is an answer to one of those two questions.</p>
+        <ul class="chip-list">
+          <li class="chip label">User Research</li>
+          <li class="chip label">Interaction Design</li>
+          <li class="chip label">Prototyping</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="feature-bands reveal">
+      <div class="feature-band">
+        <div class="feature-band__media">
+          <img src="assets/herakify-map.png" alt="Herakify interactive floor map showing a route, flagged exhibits, and crowded rooms" width="808" height="1690" loading="lazy">
+        </div>
+        <div class="feature-band__text">
+          <h3 class="feature-band__heading h2">Interactive Floor Map</h3>
+          <p class="feature-band__description body">The map exists to add to the visit, not compete with it. It shows a route built from your quiz answers, flags which exhibits are highlighted for you, and marks which rooms are crowded right now. Early versions failed usability testing on visual hierarchy — so I rebuilt it with higher contrast, standardized button styles, and cleaner route guidance.</p>
+        </div>
+      </div>
+
+      <div class="feature-band feature-band--reverse">
+        <div class="feature-band__media">
+          <img src="assets/herakify-chat.png" alt="Herakify AI chat guide conversation on a phone screen" width="824" height="1712" loading="lazy">
+        </div>
+        <div class="feature-band__text">
+          <h3 class="feature-band__heading h2">AI Chat Guide</h3>
+          <p class="feature-band__description body">Testing showed the quiz worked but felt like a chore to some visitors. So I built a conversational alternative that asks the same things in a more casual way — how long you have, what you're curious about — and offered both. Some personalization, two levels of effort, so people could choose how much they wanted to give.</p>
+        </div>
+      </div>
+
+      <div class="feature-band">
+        <div class="feature-band__media">
+          <img src="assets/herakify-exhibit.png" alt="Herakify curated exhibit detail screen for the Bull's Head Rhyton" width="746" height="1556" loading="lazy">
+        </div>
+        <div class="feature-band__text">
+          <h3 class="feature-band__heading h2">Curated Exhibit Detail</h3>
+          <p class="feature-band__description body">The hardest feature to get right. Visitors wanted more context than a wall label but wouldn't stand and read an essay. This gives plain-language background on a single object, surfaced only for exhibits your answers suggested you'd care about.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="impact grid reveal">
+      <div class="impact__intro">
+        <p class="section-marker label"><span class="section-marker__num">03</span> / Impact</p>
+        <h2 class="impact__heading h2">Impact</h2>
+      </div>
+      <div class="impact__metrics">
+        <div class="metric-block">
+          <p class="metric-block__number">15+</p>
+          <p class="metric-block__label label">Contextual Inquiries</p>
+        </div>
+        <div class="metric-block">
+          <p class="metric-block__number">3</p>
+          <p class="metric-block__label label">User Groups</p>
+        </div>
+        <div class="metric-block">
+          <p class="metric-block__number">1</p>
+          <p class="metric-block__label label">Design, End to End</p>
+        </div>
+      </div>
+      <p class="impact__body body reading-column">I worked across four stages: discovering user needs, building three core features, testing and iterating, then designing for continuity so the features felt like one product rather than three. I measured success against three objectives — personalization, usability, and retention — and every round of testing sent me back to change something. The quiz got shorter. The map got clearer. The chat got more casual.</p>
+      <div class="learned reading-column">
+        <p class="learned__label label">What I Learned</p>
+        <p class="learned__body body">What people say they want and where they actually got stuck are two different things. The quiz tested well on paper and still felt like a chore in practice. I also learned what I didn't solve: map interaction still needs work, and the AI guide is useful for personalization but users wanted it present in every flow, not just at the start.</p>
+      </div>
+    </section>
+
+    <section class="next-project reveal">
+      <div class="next-project__inner grid">
+        <p class="next-project__label label">Next Project</p>
+        <div class="next-project__heading-row" style="--accent: var(--jade)">
+          <h2 class="next-project__title display-l">Harmony</h2>
+          <div class="project-mark">
+            <img src="assets/mark-harmony.svg" alt="" width="40" height="28">
+          </div>
+        </div>
+        <p class="next-project__tagline body">For musicians who want to collaborate, not just listen.</p>
+        <a class="next-project__link label" href="/harmony">View Project →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="grid">
+      <ul class="footer__links">
+        <li><a class="label" href="mailto:spencerhlewis2003@gmail.com">Email</a></li>
+        <li><a class="label" href="https://linkedin.com/in/spencerhlewis" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a class="label" href="resume.pdf" target="_blank" rel="noopener">Resume</a></li>
+      </ul>
+      <p class="footer__copyright meta">© 2026 Spencer Lewis</p>
+    </div>
+  </footer>
+  <script src="nav.js"></script>
+  <script src="reveal.js"></script>
+</body>
+</html>

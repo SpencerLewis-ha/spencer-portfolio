@@ -204,9 +204,9 @@ Single page with anchor navigation, plus separate case study routes.
 | `/` | Hero, Selected Work, About strip, footer |
 | `/#work` | Anchor to Selected Work |
 | `/#about` | Anchor to About strip |
-| `/herakify` | Case study — accent `--ochre` |
-| `/harmony` | Case study — accent `--jade` |
-| `/yakabod` | Case study — accent `--muted` |
+| `/herakify` | Case study — accent `--ochre`. **Built** (`herakify.html`, routed via `vercel.json` clean URLs). This page is also the reusable case-study template — see CLAUDE.md. |
+| `/harmony` | Case study — accent `--jade`. Not yet built; will reuse the Herakify template. |
+| `/yakabod` | Case study — accent `--muted`. Not yet built; will reuse the Herakify template. |
 | `/multimedia` | Gallery — accent `--vermillion` |
 | Resume | External PDF link, opens in new tab |
 
