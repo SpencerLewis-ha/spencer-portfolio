@@ -85,6 +85,14 @@ Three families, all Google Fonts: **Instrument Serif**, **Archivo**,
 - JetBrains Mono never above 14px
 - Section markers: `01 / CHALLENGE` — numeral in project accent, label in ink
 
+**Documented exception — "About Me" heading:** set in Archivo (not
+JetBrains Mono), uppercase, ~22px, weight 600, `--vermillion`. This
+intentionally breaks from the mono-label system above — hierarchy against
+the (also-enlarged) About body copy is carried by *weight*, not size, per
+the reference this panel is measured against
+(`assets/ashleyto-reference.png`). Do not convert it back to the shared
+`.label` class.
+
 ---
 
 ## 3. Layout & grid
@@ -150,6 +158,14 @@ left/right is **dropped entirely**. Each band becomes:
 
 **About strip** — portrait image first at full width, then label, paragraph,
 link. Keeps the inverted `--ink` background, 48px internal padding.
+
+Desktop (≥1200px) layout, measured against `assets/ashleyto-reference.png`
+(a 2× capture — halve its pixel measurements): text column starts 9% in
+from the panel's left edge and runs 40% of the panel width; the remaining
+~51% is the portrait's zone. Unlike the reference's full-bleed photo, this
+build's portrait is contained — centered in its zone with equal margins on
+both sides, 4px radius, height capped to and vertically centered against
+the text block. Body copy 22px desktop / 19px mobile, line-height ~1.5.
 
 **Footer** — links stack vertically, left-aligned.
 

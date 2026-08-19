@@ -36,6 +36,15 @@ designed in Figma, built here, deployed on Vercel.
   - `mobile-homepage-layout.png` — homepage at mobile width
   - `herakify-case-study.png` / `harmony-case-study.png` / `yakabod-case-study.png`
   - `multimedia-gallery.png`
+- `assets/ashleyto-reference.png` — a **2× capture** (halve its pixel
+  measurements before using them) of ashleyto.com's About section, used to
+  set the proportions and type relationship for our own About panel (see
+  Intentional divergences below). Not a Figma export like the files above
+  and not itself the design target — the *panel proportions and text/body
+  weight relationship* were measured from it, but the portrait treatment
+  (contained/centered vs. her full-bleed) and the colour palette
+  (`--ink`/`--bone`/`--vermillion` vs. her terracotta/cream) are
+  deliberately NOT copied.
 
 ## Design system (summary — `build-spec.md` is authoritative)
 
@@ -89,19 +98,29 @@ divergence is correct — the source doc is what's stale.
   `≤14px` ceiling from build-spec §2 — don't push this further). Both are
   overrides scoped to the hero classes, not changes to the shared
   `.body-l` / `.meta` type-scale tokens, so nothing else on the site moved.
-- **About body copy enlarged and widened further, and the layout
-  reworked to hug-right:** `.about__paragraph`'s `.body` base (16px/17px) →
-  21px mobile / 27px desktop (pushed twice now — was 19/22px). `max-width`
-  now 800px (was 640, then 740) — within build-spec's 720–760px guidance
-  bracket but at the top of it, since About reads as a statement block, not
-  long-form copy. The desktop layout changed from a 50/50 column split to
-  `grid-template-columns: minmax(0, 1fr) minmax(280px, 420px)`: text hugs
-  the left edge and grows into whatever space the portrait doesn't need,
-  portrait hugs the right edge of the (now 1680px, matching the site
-  container — was 1240px) `.about__inner`. Gap between them grows with the
-  viewport (80px at 1349px up to 344px at 1680px) since text stops growing
-  at its 800px cap while the track keeps widening — this is the intended
-  "larger gap," not a bug. Ink background and portrait untouched.
+- **About panel redesigned around `assets/ashleyto-reference.png`'s
+  proportions (its 3rd revision — do not re-litigate the earlier
+  "hug-right" or 800px/27px versions, both superseded):**
+  `grid-template-columns: 9% 40% 1fr` on `.about__inner` at ≥1200px — text
+  starts 9% into the panel and runs 40% of its width (both measured
+  directly off the reference, confirmed via `getpixel()` scanning, not
+  eyeballed). The remaining ~51% is the portrait's zone: `.about__image`
+  gets `height: 100%` and centers its `<img>` (`max-width: 70%`,
+  `max-height: 520px`) — this reliably lands the image's rendered height
+  exactly equal to the text column's height with 0px vertical offset
+  (verified at three desktop widths), and equal left/right margins within
+  its zone, satisfying "contained, centred, capped, vertically centred
+  against the text" without hand-tuned numbers. **This deliberately does
+  NOT copy the reference's photo treatment** — hers is full-bleed to the
+  panel's top/right/bottom edges; ours is contained on all four sides.
+  Body copy: `.about__paragraph`'s `.body` base (16px/17px) → 19px mobile
+  / 22px desktop (this is a *decrease* from the previous revision's
+  21/27px — the ashleyto reference's body sits closer to build-spec's own
+  body-l scale than the earlier oversized pass assumed), `line-height:
+  1.5`. The "ABOUT ME" heading is no longer `.label` (JetBrains Mono
+  11px) — see build-spec §2's documented exception and the Gotcha below.
+  `.about__inner`'s own `max-width: 1680px` (matching the site container)
+  and ink background are unchanged from the prior revision.
 - **Project marks fill ~90% of the accent square**, not build-spec §7's
   stale "65%" — see Gotchas below for how.
 - **Homepage Multimedia band image:** `multimedia-landingpage.png`
@@ -111,16 +130,31 @@ divergence is correct — the source doc is what's stale.
   no longer the odd one out. The Multimedia *gallery page* (not yet built)
   still lists `multimedia-ink.jpg` for its own section 3 — that's a
   different placement and wasn't part of this change.
-- **`assets/harmony-match.png` was replaced** — the old file had solid
-  jade (`#1F5C4A`-ish, baked in at export) filling all four corners of its
+- **Harmony's phone-mockup asset is now `assets/harmony-match-2.png`,
+  not `harmony-match.png`.** The old file had solid jade
+  (`#1F5C4A`-ish, baked in at export) filling all four corners of its
   transparent PNG, which bled onto the bone-deep 39% side of the two-tone
-  field wherever the corners overhung it. New file (same 706×1448
-  dimensions) has genuinely transparent corners, confirmed via
-  `getpixel()` alpha channel before swapping. No CSS changed — the
+  field wherever the corners overhung it (confirmed via `getpixel()` alpha
+  sampling — old file's corners were fully opaque jade, new file's are
+  genuinely transparent). Fixing the file in place wasn't enough on its
+  own: browsers/CDNs can serve the stale cached bitmap for a same-named
+  URL indefinitely, so the file was `git mv`'d to a new filename
+  (`-2` suffix) to force a cache-busted URL. **If a future asset swap
+  needs to fix a *visual* bug in an existing file, rename it — don't just
+  overwrite the same filename** — or the fix may not visibly land for
+  anyone with the old file cached. No CSS changed for this fix; the
   two-tone-field gradient background was already generic and already sat
-  behind the image; the bug was purely in the asset. If any *other* project
-  image ever shows an accent-coloured halo at its corners, check the
-  source PNG's corner alpha first before touching the field CSS.
+  behind the image.
+- **Homepage Herakify link uses `href="herakify.html"`, not
+  `href="/herakify"`.** The clean-URL form 404s when served by a plain
+  static file server (`python3 -m http.server`, or any dev server without
+  Vercel's rewrite layer) since there's no literal `/herakify` resource —
+  only `vercel.json`'s `cleanUrls` makes that path resolve, and only once
+  actually deployed to Vercel. `herakify.html` works identically in both
+  environments (`cleanUrls` still 308-redirects it to `/herakify` in
+  prod), so it's the safer form for any link *within this codebase* to
+  another page in this codebase. Keep using extensionless paths only for
+  things that are genuinely deploy-target-specific.
 
 ## Working method (follow this)
 
@@ -173,10 +207,10 @@ has no Herakify-specific selectors, so it should need zero changes.
    does for Harmony's jade mark, so the preview mark shows the *next*
    project's colour while the rest of the page stays on the *current*
    project's accent.
-5. Update the homepage's project-band link for that project
-   (`href="/harmony"` etc. already exists in `index.html` — it currently
-   points at a page that doesn't exist yet; once the file is added it
-   resolves automatically via `vercel.json`'s `cleanUrls`).
+5. Update the homepage's project-band link for that project to
+   `href="harmony.html"` (extensionless `href="/harmony"` 404s outside
+   Vercel — see Gotchas; Herakify's link was already fixed this way, the
+   other two still need it once their pages exist).
 6. Re-verify at 1349/1512/1680/390px per the working method below, and
    confirm the two-tone-field aspect override (`.two-tone-field--intro`,
    4:5 desktop / square mobile) still reads correctly for that project's
@@ -309,27 +343,53 @@ faith alone.
   how many columns wrap per row — no `:nth-child` logic needed even though
   the column count itself changes at three different breakpoints (1 below
   480px, 2 from 480–1199px, 4 at ≥1200px).
+- **Playwright's `.click()` can't target a `display: contents` element
+  directly** — `boundingBox()` returns `null` for it (there's no box to
+  click, that's the point of the property), so `locator(...).click()`
+  hangs/times out waiting for a navigation that a real user's mouse click
+  would trigger fine. This applies to every `.project-band__link` (and
+  now `.next-project` if it ever gets one). **Click a visible descendant
+  instead** (e.g. `.project-band__headline`) to test link navigation —
+  the click still activates the anchor in a real browser via normal event
+  bubbling, Playwright's API just needs a literal box to aim at.
+- **Hero and About's 2-column breakpoint was investigated and found
+  already correct at 1200px** (matching bands) — instrumented checks at
+  1200/1250/1300/1349px all showed proper side-by-side layout with tracks
+  shrinking gracefully, no overflow, no visual break. If this is reported
+  as broken again, suspect a stale cache or an undeployed commit on
+  whatever's being tested against (the Harmony corner-bleed report in the
+  same conversation turned out to be exactly this kind of caching issue)
+  before assuming the CSS regressed — but re-verify with a fresh
+  `page.goto()` + screenshot rather than trusting this note blindly,
+  since "already correct" is a snapshot of one point in time, not a
+  standing guarantee.
 
 ## Current state (VERIFY with git first)
 
-The homepage has had six fix passes (uppercase two-line name, jaguar
+The homepage has had seven fix passes (uppercase two-line name, jaguar
 height cap, nav alignment, band gaps, `#work` scroll-margin, hamburger
 mobile nav, a measured spacing pass, the nav full-bleed fix, jaguar
 caption centring, project marks retightened to ~90%, the container widen
 to ~1680px with a larger `display-xl`, the hero text/jaguar gap rebalance,
-larger hero tagline/meta, and — this session — About pushed larger again
-(21/27px, 800px cap) with a hug-right two-column layout, and the
-Multimedia band's asset swapped to a portrait image). The Harmony band's
-`harmony-match.png` was replaced to fix a jade corner-bleed bug (see
-Intentional divergences). See Gotchas for implementation notes and
-**Intentional divergences from build-spec / Figma** above for what's
-deliberately off-spec and why.
+larger hero tagline/meta, and now a full About panel redesign — see
+Intentional divergences for the current numbers, and don't trust any
+About sizing/layout details mentioned earlier in this file's history over
+that section). The Multimedia band's asset was swapped to a portrait
+image; Harmony's phone-mockup asset is now `harmony-match-2.png` (renamed
+to bust a stale-cache issue on top of the corner-transparency fix); the
+homepage's Herakify link is `herakify.html` (was the clean-URL-only
+`/herakify`, which 404s outside Vercel). See Gotchas for implementation
+notes and **Intentional divergences from build-spec / Figma** above for
+what's deliberately off-spec and why.
 
-**Herakify's case study page is now built** (`herakify.html`) and doubles
-as the reusable template for Harmony and Yakabod — see the "Case study
-template" section above before starting either of those. `vercel.json`
-now exists with `"cleanUrls": true` so `/herakify` resolves; this is
-unverified against a live deploy (see that section's routing note).
+**Herakify's case study page is built** (`herakify.html`) and doubles as
+the reusable template for Harmony and Yakabod — see the "Case study
+template" section above before starting either of those (and update its
+own homepage link the same way as Herakify's once it exists — extensionless
+`.html`, not a bare clean-URL path). `vercel.json` has `"cleanUrls": true`
+so `/herakify` still resolves once actually deployed to Vercel; this
+remains unverified against a live deploy in this session (`vercel dev`
+needs a login this environment doesn't have).
 
 **Run `git log`/`git status` to see what is committed versus still in the
 working tree, and commit anything uncommitted before continuing.**
