@@ -155,6 +155,42 @@ divergence is correct — the source doc is what's stale.
   prod), so it's the safer form for any link *within this codebase* to
   another page in this codebase. Keep using extensionless paths only for
   things that are genuinely deploy-target-specific.
+- **Herakify's mockup asset is now `assets/herakify-map-2.png`, not
+  `herakify-map.png`** — same corner-transparency-plus-rename pattern as
+  Harmony's fix above (old file had bone-deep/ochre baked into its
+  corners, which happened to look fine on the homepage's two-tone field
+  by coincidence but showed a visible halo when the same file was reused
+  on the Solution feature band's solid-ochre background). All three
+  usages updated: homepage band, case-study hero field, and Solution
+  feature block 1 (build-spec §8 already notes this file is deliberately
+  reused across those last two placements — that's unchanged, only the
+  filename/transparency is new).
+- **Hero jaguar is centred in the space right of the text, not
+  left-aligned within its own track:** `.hero__image` spans
+  `grid-column: 2 / -1` (was `2 / 3`) with `justify-content: center` (was
+  `flex-start`) — it now centers across its 420px track *plus* the
+  trailing `1fr` spacer combined, instead of hugging the left edge of
+  just the 420px track and leaving the spacer as dead space to its
+  right. Verified: left/right gap within that combined zone is exactly
+  equal at every width from 1200–1680px. The 356px height cap and top
+  alignment are unchanged.
+- **Case-study template: mark sits ABOVE the eyebrow, not between it and
+  the title** — order is back link → mark → category tag → title →
+  description (was back → category → mark → title). This is a
+  deliberate divergence from the Figma order: the mark reads as a
+  project badge this way, with clear space below it, instead of being
+  squeezed between two text lines. **This is a template-level change —
+  Harmony and Yakabod inherit this order automatically** when built from
+  `herakify.html` (see "Case study template" below); don't build them
+  with the old back → category → mark → title order.
+- **Case-study template: Impact's body paragraph and "What I Learned"
+  block are side-by-side at ≥1200px, not stacked** — both wrapped in a
+  new `.impact__details` (`display: grid; grid-template-columns: 1fr 1fr`
+  at that breakpoint), paragraph left, learned block right, top-aligned,
+  each capped at `max-width: 640px`. Below 1200px they stack as before
+  (learned block regains its `margin-top`). The 3px accent left border on
+  `.learned` is unchanged. **Also a template-level change** — inherited
+  by Harmony and Yakabod automatically, same as the mark reorder above.
 
 ## Working method (follow this)
 
@@ -219,13 +255,17 @@ has no Herakify-specific selectors, so it should need zero changes.
 
 **Template sections, top to bottom** (all generic class names, see
 `herakify.html` for the concrete markup): `.case-intro` (back link,
-category tag, mark, title, description, `.two-tone-field--intro` hero
-image) → `.details-strip` (4 hairline cells, self-adapting 1/2/4-column
-via the border-on-every-cell technique — see Gotchas) → `.content-section`
-×2 (Challenge with a supporting `.two-tone-field`, Solution without one —
+**mark, then category tag** — mark reads as a badge above the eyebrow,
+not squeezed between it and the title, see Intentional divergences —
+title, description, `.two-tone-field--intro` hero image) →
+`.details-strip` (4 hairline cells, self-adapting 1/2/4-column via the
+border-on-every-cell technique — see Gotchas) → `.content-section` ×2
+(Challenge with a supporting `.two-tone-field`, Solution without one —
 add `.content-section--no-field`) → `.feature-bands` (full-bleed accent,
 3× `.feature-band`, add `.feature-band--reverse` to alternate) →
-`.impact` (`.section-marker`, `.metric-block` ×3, `.learned`) →
+`.impact` (`.section-marker`, `.metric-block` ×3, then
+**`.impact__details`** wrapping `.impact__body` + `.learned`
+side-by-side at ≥1200px — see Intentional divergences) →
 `.next-project` (bone-deep background) → the homepage's `.footer`, reused
 as-is.
 
@@ -352,44 +392,53 @@ faith alone.
   instead** (e.g. `.project-band__headline`) to test link navigation —
   the click still activates the anchor in a real browser via normal event
   bubbling, Playwright's API just needs a literal box to aim at.
-- **Hero and About's 2-column breakpoint was investigated and found
-  already correct at 1200px** (matching bands) — instrumented checks at
-  1200/1250/1300/1349px all showed proper side-by-side layout with tracks
-  shrinking gracefully, no overflow, no visual break. If this is reported
-  as broken again, suspect a stale cache or an undeployed commit on
-  whatever's being tested against (the Harmony corner-bleed report in the
-  same conversation turned out to be exactly this kind of caching issue)
-  before assuming the CSS regressed — but re-verify with a fresh
-  `page.goto()` + screenshot rather than trusting this note blindly,
-  since "already correct" is a snapshot of one point in time, not a
-  standing guarantee.
+- **Hero and About's 2-column breakpoint has now been investigated
+  TWICE and found already correct at 1200px both times** (matching
+  bands). Second pass used fresh `browser.newContext()` per width (no
+  shared cache/session state) at 1200/1250/1300/1349/1512/1680px —
+  side-by-side at every one, tracks shrinking gracefully, no overflow.
+  Also re-audited the full cascade (grepped every `.hero`/`.hero__intro`/
+  `.hero__image`/`.about__inner`/`.about__image`/`.about__content`
+  occurrence in `styles.css` for a duplicate/conflicting rule, the exact
+  bug class the report suspected) and found nothing. If this is reported
+  as broken a third time, the CSS is very unlikely to be the cause —
+  check what's actually being tested (live Vercel preview vs. local,
+  deployed commit vs. latest, actual OS/browser zoom level) before
+  touching this code again. Still re-verify fresh rather than trusting
+  this note blindly; "correct twice" isn't a standing guarantee, but it
+  is a strong prior against a third from-scratch investigation being the
+  right use of time before checking the test conditions first.
 
 ## Current state (VERIFY with git first)
 
-The homepage has had seven fix passes (uppercase two-line name, jaguar
+The homepage has had eight fix passes (uppercase two-line name, jaguar
 height cap, nav alignment, band gaps, `#work` scroll-margin, hamburger
 mobile nav, a measured spacing pass, the nav full-bleed fix, jaguar
 caption centring, project marks retightened to ~90%, the container widen
 to ~1680px with a larger `display-xl`, the hero text/jaguar gap rebalance,
-larger hero tagline/meta, and now a full About panel redesign — see
-Intentional divergences for the current numbers, and don't trust any
-About sizing/layout details mentioned earlier in this file's history over
-that section). The Multimedia band's asset was swapped to a portrait
-image; Harmony's phone-mockup asset is now `harmony-match-2.png` (renamed
-to bust a stale-cache issue on top of the corner-transparency fix); the
-homepage's Herakify link is `herakify.html` (was the clean-URL-only
-`/herakify`, which 404s outside Vercel). See Gotchas for implementation
-notes and **Intentional divergences from build-spec / Figma** above for
-what's deliberately off-spec and why.
+larger hero tagline/meta, a full About panel redesign, and now the hero
+jaguar re-centred in the space right of the text — see Intentional
+divergences for current numbers, don't trust earlier History for exact
+values on anything touched more than once). The Multimedia band's asset
+was swapped to a portrait image; Harmony's *and now Herakify's*
+phone-mockup assets are `harmony-match-2.png` / `herakify-map-2.png`
+(same corner-transparency-plus-rename pattern, applied twice now — see
+Gotchas if a third project image ever shows an accent-coloured halo);
+the homepage's Herakify link is `herakify.html`.
 
 **Herakify's case study page is built** (`herakify.html`) and doubles as
 the reusable template for Harmony and Yakabod — see the "Case study
-template" section above before starting either of those (and update its
-own homepage link the same way as Herakify's once it exists — extensionless
-`.html`, not a bare clean-URL path). `vercel.json` has `"cleanUrls": true`
-so `/herakify` still resolves once actually deployed to Vercel; this
-remains unverified against a live deploy in this session (`vercel dev`
-needs a login this environment doesn't have).
+template" section above before starting either of those, which now
+includes the mark-above-eyebrow intro order and the Impact two-column
+layout (both template-level, both inherited automatically, see
+Intentional divergences). Update each new page's own homepage link the
+same way as Herakify's once it exists — extensionless `.html`, not a
+bare clean-URL path. `vercel.json` has `"cleanUrls": true` so `/herakify`
+still resolves once actually deployed to Vercel; this remains unverified
+against a live deploy in this session (`vercel dev` needs a login this
+environment doesn't have). See Gotchas for implementation notes and
+**Intentional divergences from build-spec / Figma** above for what's
+deliberately off-spec and why.
 
 **Run `git log`/`git status` to see what is committed versus still in the
 working tree, and commit anything uncommitted before continuing.**

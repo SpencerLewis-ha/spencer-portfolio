@@ -457,9 +457,12 @@ body {
   }
 
   .hero__image {
-    grid-column: 2 / 3;
+    /* spans the jaguar's own track plus the trailing 1fr spacer, then
+       centers within that combined space so it isn't hugging the left
+       edge of its 420px track with dead space to its right */
+    grid-column: 2 / -1;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   .hero__image-inner {
@@ -857,9 +860,17 @@ body {
   color: var(--muted);
 }
 
+/* mark sits above the eyebrow (back → mark → eyebrow → title), reading as
+   a project badge — intentional divergence from the Figma order, see
+   CLAUDE.md. Scoped to this context so the shared .project-mark component
+   itself stays untouched. */
+.case-intro__content .project-mark {
+  margin-top: var(--space-l);
+}
+
 .case-intro__category {
   color: var(--muted);
-  margin-top: var(--space-l);
+  margin-top: var(--space-m);
 }
 
 .case-intro__title {
@@ -1125,16 +1136,20 @@ body {
   margin-top: var(--space-xs);
 }
 
-.impact__body {
+.impact__details {
   grid-column: 1 / -1;
   margin-top: var(--space-m);
 }
 
+.impact__body {
+  max-width: 640px;
+}
+
 .learned {
-  grid-column: 1 / -1;
   margin-top: var(--space-l);
   border-left: 3px solid var(--accent);
   padding-left: var(--space-m);
+  max-width: 640px;
 }
 
 .learned__label {
@@ -1158,6 +1173,19 @@ body {
 
   .metric-block__number {
     font-size: 56px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .impact__details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--space-xl);
+    align-items: start;
+  }
+
+  .learned {
+    margin-top: 0;
   }
 }
 
