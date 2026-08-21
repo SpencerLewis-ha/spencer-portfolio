@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yakabod — Case Study | Spencer Lewis</title>
+  <link rel="preload" href="assets/fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/archivo-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="nav" aria-label="Primary">
+    <div class="nav__inner">
+      <a class="nav__logo meta" href="/">Spencer Lewis</a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+      </button>
+      <ul class="nav__links" id="nav-menu">
+        <li><a class="label" href="/">Home</a></li>
+        <li><a class="label" href="/#work">Work</a></li>
+        <li><a class="label" href="/#about">About</a></li>
+        <li><a class="label" href="resume.pdf" target="_blank" rel="noopener">Resume</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main class="case-study" style="--accent: var(--muted)">
+    <section class="case-intro grid reveal">
+      <div class="case-intro__content">
+        <a class="case-intro__back label" href="/#work">← Back</a>
+        <div class="project-mark">
+          <img src="assets/mark-yakabod.svg" alt="" width="34" height="34">
+        </div>
+        <p class="case-intro__category label">Enterprise / Engineering</p>
+        <h1 class="case-intro__title display-l">Yakabod</h1>
+        <p class="case-intro__description body-l reading-column">Two summers on an engineering team building secure software for government and security clients. This is where I learned what happens to a design decision after it leaves Figma.</p>
+      </div>
+      <div class="case-intro__field two-tone-field two-tone-field--intro">
+        <img src="assets/yak-hero.png" alt="Yakabod test coverage dashboard graphic" width="598" height="1202" loading="lazy">
+      </div>
+    </section>
+
+    <section class="details-strip grid reveal">
+      <div class="details-strip__cell">
+        <p class="details-strip__label label">Role</p>
+        <p class="details-strip__value meta">Software Engineering Intern</p>
+      </div>
+      <div class="details-strip__cell">
+        <p class="details-strip__label label">Platform</p>
+        <p class="details-strip__value meta">Web, Enterprise</p>
+      </div>
+      <div class="details-strip__cell">
+        <p class="details-strip__label label">Timeline</p>
+        <p class="details-strip__value meta">Summers 2023 & 2024</p>
+      </div>
+      <div class="details-strip__cell">
+        <p class="details-strip__label label">Tools</p>
+        <p class="details-strip__value meta">Agile / SDLC</p>
+      </div>
+    </section>
+
+    <section class="content-section grid reveal">
+      <div class="content-section__text">
+        <p class="section-marker label"><span class="section-marker__num">01</span> / Challenge</p>
+        <h2 class="content-section__heading h2">Challenge</h2>
+        <p class="content-section__body body reading-column">Software used by government and security teams has an unusually high bar for reliability. Gaps in test coverage and inconsistent documentation made it harder to catch problems before a release went out.</p>
+      </div>
+      <div class="content-section__field two-tone-field">
+        <img src="assets/yak-challenge.png" alt="Yakabod defect tracking graphic" width="872" height="746" loading="lazy">
+      </div>
+    </section>
+
+    <section class="content-section content-section--no-field grid reveal">
+      <div class="content-section__text">
+        <p class="section-marker label"><span class="section-marker__num">02</span> / Solution</p>
+        <h2 class="content-section__heading h2">Solution</h2>
+        <p class="content-section__body body reading-column">Secure enterprise software has an unusually high bar for reliability — a defect that reaches a government client is a different kind of problem than a bug in a consumer app. I worked through regression, acceptance, integration, and feature validation cycles across two summers, and the thing that made the work useful wasn't volume. It was documenting defects clearly enough that any engineer could reproduce them without asking me.</p>
+        <ul class="chip-list">
+          <li class="chip label">QA</li>
+          <li class="chip label">Agile</li>
+          <li class="chip label">Documentation</li>
+          <li class="chip label">Test Automation</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="feature-bands reveal">
+      <div class="feature-band">
+        <div class="feature-band__media">
+          <img src="assets/yak-coverage.png" alt="Yakabod test coverage bar chart graphic" width="650" height="1300" loading="lazy">
+        </div>
+        <div class="feature-band__text">
+          <h3 class="feature-band__heading h2">Test Coverage</h3>
+          <p class="feature-band__description body">500+ tests across four workflow types. Coverage matters less than consistency — running the same ground the same way each release is what catches regressions, and that only works if the process is written down.</p>
+        </div>
+      </div>
+
+      <div class="feature-band feature-band--reverse">
+        <div class="feature-band__media">
+          <img src="assets/yak-defects.png" alt="Yakabod defect status tracking graphic with colored circles" width="564" height="1136" loading="lazy">
+        </div>
+        <div class="feature-band__text">
+          <h3 class="feature-band__heading h2">Defect Tracking</h3>
+          <p class="feature-band__description body">Every result logged with reproduction steps and browser context. A defect that can't be reproduced gets rediscovered next release, so the documentation was the actual deliverable, not the finding.</p>
+        </div>
+      </div>
+
+      <div class="feature-band">
+        <div class="feature-band__media">
+          <img src="assets/yak-docs.png" alt="Yakabod documentation standards graphic" width="636" height="1272" loading="lazy">
+        </div>
+        <div class="feature-band__text">
+          <h3 class="feature-band__heading h2">Documentation Standards</h3>
+          <p class="feature-band__description body">I contributed to a repeatable structure for regression coverage so the team wasn't relying on whoever happened to remember what was tested last time. It's the part of the work that outlasted my internship.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="impact grid reveal">
+      <div class="impact__intro">
+        <p class="section-marker label"><span class="section-marker__num">03</span> / Impact</p>
+        <h2 class="impact__heading h2">Impact</h2>
+      </div>
+      <div class="impact__metrics">
+        <div class="metric-block">
+          <p class="metric-block__number">500+</p>
+          <p class="metric-block__label label">Tests Run</p>
+        </div>
+        <div class="metric-block">
+          <p class="metric-block__number">4</p>
+          <p class="metric-block__label label">Workflow Types</p>
+        </div>
+        <div class="metric-block">
+          <p class="metric-block__number">2</p>
+          <p class="metric-block__label label">Summers Interned</p>
+        </div>
+      </div>
+      <div class="impact__details">
+        <p class="impact__body body">Sitting in sprint planning, code reviews, and standups for two summers showed me where handoffs actually break down, and how much of a design's fate gets decided by constraints nobody wrote down.</p>
+        <div class="learned">
+          <p class="learned__label label">What I Learned</p>
+          <p class="learned__body body">Seeing where handoffs break changed how I design. I think about implementation cost while I'm still in Figma now, not after.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="next-project reveal">
+      <div class="next-project__inner grid">
+        <p class="next-project__label label">Next Project</p>
+        <div class="next-project__heading-row" style="--accent: var(--ochre)">
+          <h2 class="next-project__title display-l">Herakify</h2>
+          <div class="project-mark">
+            <img src="assets/mark-herakify.svg" alt="" width="41" height="37">
+          </div>
+        </div>
+        <p class="next-project__tagline body">Turning a disorienting museum visit into a guided one.</p>
+        <a class="next-project__link label" href="herakify.html">View Project →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="grid">
+      <ul class="footer__links">
+        <li><a class="label" href="mailto:spencerhlewis2003@gmail.com">Email</a></li>
+        <li><a class="label" href="https://linkedin.com/in/spencerhlewis" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a class="label" href="resume.pdf" target="_blank" rel="noopener">Resume</a></li>
+      </ul>
+      <p class="footer__copyright meta">© 2026 Spencer Lewis</p>
+    </div>
+  </footer>
+  <script src="nav.js"></script>
+  <script src="reveal.js"></script>
+</body>
+</html>

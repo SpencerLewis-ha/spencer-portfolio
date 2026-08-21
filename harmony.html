@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harmony — Case Study | Spencer Lewis</title>
+  <link rel="preload" href="assets/fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/archivo-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="nav" aria-label="Primary">
+    <div class="nav__inner">
+      <a class="nav__logo meta" href="/">Spencer Lewis</a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+      </button>
+      <ul class="nav__links" id="nav-menu">
+        <li><a class="label" href="/">Home</a></li>
+        <li><a class="label" href="/#work">Work</a></li>
+        <li><a class="label" href="/#about">About</a></li>
+        <li><a class="label" href="resume.pdf" target="_blank" rel="noopener">Resume</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main class="case-study" style="--accent: var(--jade)">
+    <section class="case-intro grid reveal">
+      <div class="case-intro__content">
+        <a class="case-intro__back label" href="/#work">← Back</a>
+        <div class="project-mark">
+          <img src="assets/mark-harmony.svg" alt="" width="40" height="28">
+        </div>
+        <p class="case-intro__category label">Mobile / Multi-Screen</p>
+        <h1 class="case-intro__title display-l">Harmony</h1>
+        <p class="case-intro__description body-l reading-column">A social platform for musicians who want to collaborate, not just listen. I designed five connected flows and held them together as one product.</p>
+      </div>
+      <div class="case-intro__field two-tone-field two-tone-field--intro">
+        <img src="assets/harmony-landing.png" alt="Harmony app landing screen on a phone" width="496" height="1024" loading="lazy">
+      </div>
+    </section>
+
+    <section class="details-strip grid reveal">
+      <div class="details-strip__cell">
+        <p class="details-strip__label label">Role</p>
+        <p class="details-strip__value meta">Product Designer</p>
+      </div>
+      <div class="details-strip__cell">
+        <p class="details-strip__label label">Platform</p>
+        <p class="details-strip__value meta">iOS</p>
+      </div>
+      <div class="details-strip__cell">
+        <p class="details-strip__label label">Timeline</p>
+        <p class="details-strip__value meta">Self-directed</p>
+      </div>
+      <div class="details-strip__cell">
+        <p class="details-strip__label label">Tools</p>
+        <p class="details-strip__value meta">Figma</p>
+      </div>
+    </section>
+
+    <section class="content-section grid reveal">
+      <div class="content-section__text">
+        <p class="section-marker label"><span class="section-marker__num">01</span> / Challenge</p>
+        <h2 class="content-section__heading h2">Challenge</h2>
+        <p class="content-section__body body reading-column">Music apps are built for listening. If you actually play, there's nowhere to find people to play with, see what's happening locally, or show what you can do and when you're free.</p>
+      </div>
+      <div class="content-section__field two-tone-field">
+        <img src="assets/harmony-challenge.png" alt="Harmony matching results screen on a phone" width="590" height="1220" loading="lazy">
+      </div>
+    </section>
+
+    <section class="content-section content-section--no-field grid reveal">
+      <div class="content-section__text">
+        <p class="section-marker label"><span class="section-marker__num">02</span> / Solution</p>
+        <h2 class="content-section__heading h2">Solution</h2>
+        <p class="content-section__body body reading-column">I interviewed working musicians about how they actually find people to play with. The answers were consistent: chemistry and shared taste matter more than follower counts, inconsistent commitment kills projects, and most collaborations happen through studio networking rather than any platform. People wanted to hear someone play before reaching out, filter by instrument and skill, and talk somewhere before committing. Those five needs became five flows, and I kept them consistent so the product felt like one thing.</p>
+        <ul class="chip-list">
+          <li class="chip label">Product Design</li>
+          <li class="chip label">Design Systems</li>
+          <li class="chip label">Prototyping</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="feature-bands reveal">
+      <div class="feature-band">
+        <div class="feature-band__media">
+          <img src="assets/harmony-match-2.png" alt="Harmony compatibility matching screen on a phone" width="706" height="1448" loading="lazy">
+        </div>
+        <div class="feature-band__text">
+          <h3 class="feature-band__heading h2">Compatibility Matching</h3>
+          <p class="feature-band__description body">Musicians told me they filter on genre, instrument, skill level, and how seriously someone takes it — not on popularity. So matching surfaces those attributes directly, including availability, because mismatched commitment came up repeatedly as the thing that ends collaborations.</p>
+        </div>
+      </div>
+
+      <div class="feature-band feature-band--reverse">
+        <div class="feature-band__media">
+          <img src="assets/harmony-profile-2.png" alt="Harmony artist profile screen for a musician named Sarah" width="696" height="1442" loading="lazy">
+        </div>
+        <div class="feature-band__text">
+          <h3 class="feature-band__heading h2">Artist Profiles</h3>
+          <p class="feature-band__description body">Every musician I spoke with wanted to hear someone play before reaching out. Profiles lead with audio samples, then genres, roles, experience, and what that person is actually looking to do — record, perform, or just jam. A first message has something behind it.</p>
+        </div>
+      </div>
+
+      <div class="feature-band">
+        <div class="feature-band__media">
+          <img src="assets/harmony-events-2.png" alt="Harmony local open mic night event screen on a phone" width="688" height="1406" loading="lazy">
+        </div>
+        <div class="feature-band__text">
+          <h3 class="feature-band__heading h2">Local Events</h3>
+          <p class="feature-band__description body">Interviews split on local versus remote — people wanted both. Events covers the local half: open mics and sessions nearby, who's attending, and a thread to sort out details. It's the low-commitment way to meet someone before agreeing to anything.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="impact grid reveal">
+      <div class="impact__intro">
+        <p class="section-marker label"><span class="section-marker__num">03</span> / Impact</p>
+        <h2 class="impact__heading h2">Impact</h2>
+      </div>
+      <div class="impact__metrics">
+        <div class="metric-block">
+          <p class="metric-block__number">5</p>
+          <p class="metric-block__label label">Connected Flows</p>
+        </div>
+        <div class="metric-block">
+          <p class="metric-block__number">2</p>
+          <p class="metric-block__label label">Fidelity Stages</p>
+        </div>
+        <div class="metric-block">
+          <p class="metric-block__number">1</p>
+          <p class="metric-block__label label">Designer</p>
+        </div>
+      </div>
+      <div class="impact__details">
+        <p class="impact__body body">Everything moved from low fidelity to high fidelity based on what participants said rather than what looked good. The harder problem was consistency — five flows sharing one visual and interaction language, so moving from matching to a profile to a chat never felt like changing apps.</p>
+        <div class="learned">
+          <p class="learned__label label">What I Learned</p>
+          <p class="learned__body body">Consistency across a whole product is a different skill than polish on one screen. Five flows taught me more about systems thinking than any single interface would have.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="next-project reveal">
+      <div class="next-project__inner grid">
+        <p class="next-project__label label">Next Project</p>
+        <div class="next-project__heading-row" style="--accent: var(--muted)">
+          <h2 class="next-project__title display-l">Yakabod</h2>
+          <div class="project-mark">
+            <img src="assets/mark-yakabod.svg" alt="" width="34" height="34">
+          </div>
+        </div>
+        <p class="next-project__tagline body">Learning where design decisions break down in engineering.</p>
+        <a class="next-project__link label" href="yakabod.html">View Project →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="grid">
+      <ul class="footer__links">
+        <li><a class="label" href="mailto:spencerhlewis2003@gmail.com">Email</a></li>
+        <li><a class="label" href="https://linkedin.com/in/spencerhlewis" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a class="label" href="resume.pdf" target="_blank" rel="noopener">Resume</a></li>
+      </ul>
+      <p class="footer__copyright meta">© 2026 Spencer Lewis</p>
+    </div>
+  </footer>
+  <script src="nav.js"></script>
+  <script src="reveal.js"></script>
+</body>
+</html>

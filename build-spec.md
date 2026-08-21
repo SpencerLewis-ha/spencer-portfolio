@@ -221,8 +221,8 @@ Single page with anchor navigation, plus separate case study routes.
 | `/#work` | Anchor to Selected Work |
 | `/#about` | Anchor to About strip |
 | `/herakify` | Case study — accent `--ochre`. **Built** (`herakify.html`, routed via `vercel.json` clean URLs). This page is also the reusable case-study template — see CLAUDE.md. |
-| `/harmony` | Case study — accent `--jade`. Not yet built; will reuse the Herakify template. |
-| `/yakabod` | Case study — accent `--muted`. Not yet built; will reuse the Herakify template. |
+| `/harmony` | Case study — accent `--jade`. **Built** (`harmony.html`, cloned from the Herakify template). |
+| `/yakabod` | Case study — accent `--muted`. **Built** (`yakabod.html`, cloned from the Herakify template). |
 | `/multimedia` | Gallery — accent `--vermillion` |
 | Resume | External PDF link, opens in new tab |
 
@@ -300,9 +300,9 @@ All assets live in `/assets`. Exact filenames and placements:
 | :---- | :---- |
 | `harmony-landing.png` | Hero |
 | `harmony-challenge.png` | Challenge supporting image |
-| `harmony-match.png` | Solution feature block 1 |
-| `harmony-profile.png` | Solution feature block 2 |
-| `harmony-events.png` | Solution feature block 3 |
+| `harmony-match-2.png` | Solution feature block 1 (renamed from `harmony-match.png`, corner-transparency fix) |
+| `harmony-profile-2.png` | Solution feature block 2 (renamed from `harmony-profile.png`, corner-transparency fix) |
+| `harmony-events-2.png` | Solution feature block 3 (renamed from `harmony-events.png`, corner-transparency fix) |
 
 ### Yakabod — accent `--muted`
 

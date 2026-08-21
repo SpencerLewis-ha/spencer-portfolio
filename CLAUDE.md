@@ -191,6 +191,40 @@ divergence is correct — the source doc is what's stale.
   (learned block regains its `margin-top`). The 3px accent left border on
   `.learned` is unchanged. **Also a template-level change** — inherited
   by Harmony and Yakabod automatically, same as the mark reorder above.
+- **Harmony's `assets/harmony-profile.png` and `harmony-events.png` are
+  now `harmony-profile-2.png` / `harmony-events-2.png`** — third and
+  fourth instances of the same corner-transparency-plus-rename pattern
+  (`harmony-match-2.png`, `herakify-map-2.png` above). Both had fully
+  opaque jade baked into all four corners; fixed programmatically this
+  time (no pre-corrected file was provided) via a BFS flood-fill from
+  the border inward — matches within a colour-distance tolerance of the
+  sampled corner colour get set to alpha 0, then the transparent region
+  is dilated 2px with a looser tolerance to also clear the anti-aliased
+  edge halo, without eating into the phone-frame artwork (verified by
+  compositing onto a checkerboard afterward — see Gotchas for the
+  general technique if this comes up again). Used on Harmony's Solution
+  feature blocks 2 and 3 (full-bleed jade background) — the baked jade
+  (sampled `rgb(49, 91, 75)`) wasn't an exact match for `--jade`
+  (`#1F5C4A` = `rgb(31, 92, 74)`, notably off on the red channel), so it
+  read as a real if subtle seam even on a same-colour background, not
+  just a visible bleed onto a different one.
+- **Harmony (`harmony.html`) and Yakabod (`yakabod.html`) are both
+  built**, cloned directly from `herakify.html` per the "Case study
+  template" section below — this validates the template held up
+  unchanged across two more projects with zero structural edits, only
+  content/accent/asset swaps. Both wired into the homepage and into
+  each other's `.next-project` links using the `.html` form (see the
+  Herakify-link Gotcha) — note Herakify's own internal `.next-project`
+  link was ALSO changed from `/harmony` to `harmony.html` as part of
+  this, since it had the identical 404-on-static-server bug and this
+  was the natural point to fix it.
+- **Yakabod's graphics need no special wrapper CSS despite build-spec
+  §8's "sitting on a bone panel with 40px padding" note** — that
+  description is of what's already baked into the exported PNGs
+  themselves (confirmed by opening a few: each has cream/bone padding
+  built in around the flat graphic already). They're dropped into
+  `.two-tone-field` / `.feature-band__media` exactly like every other
+  project's phone-mockup images, no Yakabod-specific selectors anywhere.
 
 ## Working method (follow this)
 
@@ -215,43 +249,46 @@ stacked single-column on mobile — Herakify=ochre, Harmony=jade, Yakabod=muted,
 Multimedia=vermillion) · About strip (inverted `--ink` bg, text left, portrait
 right) · Footer.
 
-## Case study template — reuse this for Harmony and Yakabod
+## Case study template — how Harmony and Yakabod were built
 
-`herakify.html` is the reference implementation of a **generic, reusable
-case-study template**. Building Harmony or Yakabod means copying it and
-swapping content/accent — the CSS underneath (in `styles.css`, the block
-headed "Case study template — reusable for Herakify / Harmony / Yakabod")
-has no Herakify-specific selectors, so it should need zero changes.
+`herakify.html` is a **generic, reusable case-study template**, and
+`harmony.html` / `yakabod.html` are both cloned from it with **zero
+structural changes** — only content, accent, and image swaps. This
+validates the template: it held up unchanged across two more projects.
+The CSS underneath (in `styles.css`, the block headed "Case study
+template — reusable for Herakify / Harmony / Yakabod") has no
+Herakify-specific selectors. If the Multimedia gallery or a 4th case
+study ever needs this same treatment, repeat the same process:
 
-**To reskin for a new project:**
-
-1. Copy `herakify.html` → `harmony.html` (or `yakabod.html`).
-2. Change `<main class="case-study" style="--accent: var(--ochre)">` to
-   the new project's accent (`--jade` for Harmony, `--muted` for Yakabod).
-   Every colour in the template — the mark square, section-marker numerals,
-   the `.learned` left border, the feature-bands background, the
-   `.next-project__link` — reads `var(--accent)` and follows automatically.
+1. Copy `herakify.html` (or any of the three) to the new filename.
+2. Change `<main class="case-study" style="--accent: var(--X)">` to the
+   new project's accent. Every colour in the template — the mark square,
+   section-marker numerals, the `.learned` left border, the
+   feature-bands background, the `.next-project__link` — reads
+   `var(--accent)` and follows automatically.
 3. Swap the mark SVG (`assets/mark-*.svg`), all image `src`/`alt`/
    `width`/`height`, and every text node. **Transcribe copy directly from
-   the reference screenshot** (`screenshots/harmony-case-study.png` /
-   `yakabod-case-study.png`) — don't paraphrase, per the standing
+   the reference screenshot** — don't paraphrase, per the standing
    instruction on this project.
-4. Update `.next-project` at the bottom to point to *its* next project
-   (Harmony → Yakabod → Multimedia, presumably — check the reference for
-   the actual sequence build-spec/Figma intends) and give its mark a
-   `style="--accent: var(--jade-or-whatever)"` override like Herakify's
-   does for Harmony's jade mark, so the preview mark shows the *next*
-   project's colour while the rest of the page stays on the *current*
-   project's accent.
-5. Update the homepage's project-band link for that project to
-   `href="harmony.html"` (extensionless `href="/harmony"` 404s outside
-   Vercel — see Gotchas; Herakify's link was already fixed this way, the
-   other two still need it once their pages exist).
-6. Re-verify at 1349/1512/1680/390px per the working method below, and
-   confirm the two-tone-field aspect override (`.two-tone-field--intro`,
-   4:5 desktop / square mobile) still reads correctly for that project's
-   hero image aspect ratio — it was tuned against Herakify's phone
-   mockup and hasn't been checked against Harmony's or Yakabod's assets.
+4. Update `.next-project` at the bottom to point to the next one in
+   sequence and give its mark a `style="--accent: var(--next-accent)"`
+   override, so the preview mark shows the *next* project's colour while
+   the rest of the page stays on the *current* project's accent. Confirmed
+   sequence from the actual reference screenshots (not a guess): Herakify
+   → Harmony → Yakabod → Herakify — a closed loop among the three case
+   studies, not extending to Multimedia (which is a gallery page, not a
+   case study, and isn't part of this template at all).
+5. Update the homepage's project-band link for that project to the
+   `.html` form (`href="harmony.html"`, not `/harmony` — see Gotchas).
+   All three case-study links are done; Multimedia's homepage link is
+   still the unfixed `/multimedia` clean-URL form since that page isn't
+   built yet.
+6. Re-verify at 1200/1349/1680/390px per the working method below.
+   `.two-tone-field--intro`'s 4:5 desktop / square mobile aspect override
+   has now been confirmed against three different hero image aspect
+   ratios (Herakify's, Harmony's, Yakabod's phone/graphic mockups) with
+   no issues — it's a safe default, not something to re-derive per
+   project.
 
 **Template sections, top to bottom** (all generic class names, see
 `herakify.html` for the concrete markup): `.case-intro` (back link,
@@ -269,13 +306,16 @@ side-by-side at ≥1200px — see Intentional divergences) →
 `.next-project` (bone-deep background) → the homepage's `.footer`, reused
 as-is.
 
-**Routing:** `vercel.json` has `"cleanUrls": true`, so `herakify.html`
-serves at both `/herakify.html` and `/herakify` (redirecting the former to
-the latter). This wasn't previously configured — the homepage's
-`href="/herakify"` links predate this file existing. Untested against a
-live Vercel deploy in this session (`vercel dev` needs a login this
-environment doesn't have) — confirm clean-URL routing actually resolves
-once this branch is deployed, don't assume the config is sufficient on
+**Routing:** `vercel.json` has `"cleanUrls": true`, so all three case
+study pages serve at both their `.html` path and the clean-URL form
+(e.g. `/herakify.html` redirects to `/herakify`). Every link *within
+this codebase* between these pages uses the `.html` form regardless
+(see Gotchas) — the clean-URL behaviour only matters for the deployed
+site being reachable at the pretty path, not for internal navigation.
+Untested against a live Vercel deploy in this session (`vercel dev`
+needs a login this environment doesn't have) — confirm clean-URL
+routing actually resolves once this branch is deployed, don't assume
+the config is sufficient on
 faith alone.
 
 ## Gotchas learned (don't rediscover these)
@@ -408,6 +448,17 @@ faith alone.
   this note blindly; "correct twice" isn't a standing guarantee, but it
   is a strong prior against a third from-scratch investigation being the
   right use of time before checking the test conditions first.
+- **Flood-fill technique for fixing baked-in corner colour without a
+  pre-corrected file:** sample the actual corner colour (don't assume it
+  matches the CSS token exactly — Harmony's baked jade was a few values
+  off from `--jade`), BFS flood-fill from every border pixel matching
+  that colour within a tolerance (~30) to a boolean mask, set alpha to 0
+  for the mask, then dilate the mask 2px using a *looser* tolerance
+  (~60) to also clear the anti-aliased edge halo without needing a
+  separate erosion pass. Verify by compositing the result onto a
+  checkerboard and eyeballing the edges (checked here that the phone
+  frame outline wasn't eaten into). Plain BFS + numpy is enough — no
+  `scipy` needed and it isn't installed in this environment anyway.
 
 ## Current state (VERIFY with git first)
 
@@ -420,29 +471,33 @@ larger hero tagline/meta, a full About panel redesign, and now the hero
 jaguar re-centred in the space right of the text — see Intentional
 divergences for current numbers, don't trust earlier History for exact
 values on anything touched more than once). The Multimedia band's asset
-was swapped to a portrait image; Harmony's *and now Herakify's*
-phone-mockup assets are `harmony-match-2.png` / `herakify-map-2.png`
-(same corner-transparency-plus-rename pattern, applied twice now — see
-Gotchas if a third project image ever shows an accent-coloured halo);
-the homepage's Herakify link is `herakify.html`.
+was swapped to a portrait image. Three of the four homepage project-band
+links now use the `.html` form (`herakify.html` / `harmony.html` /
+`yakabod.html`); Multimedia's is still the unfixed `href="/multimedia"`
+clean-URL path, since that page doesn't exist yet — give it the same
+`.html` fix whenever it's built.
 
-**Herakify's case study page is built** (`herakify.html`) and doubles as
-the reusable template for Harmony and Yakabod — see the "Case study
-template" section above before starting either of those, which now
-includes the mark-above-eyebrow intro order and the Impact two-column
-layout (both template-level, both inherited automatically, see
-Intentional divergences). Update each new page's own homepage link the
-same way as Herakify's once it exists — extensionless `.html`, not a
-bare clean-URL path. `vercel.json` has `"cleanUrls": true` so `/herakify`
-still resolves once actually deployed to Vercel; this remains unverified
+**All three case-study pages are now built**: `herakify.html` (the
+original, and the reusable template — see "Case study template" above),
+`harmony.html` and `yakabod.html` (both cloned from it with zero
+structural changes, just content/accent/asset swaps — the template held
+up unchanged across both, including the mark-above-eyebrow intro order
+and Impact two-column layout). All three are wired together and into the
+homepage using the `.html` link form (Herakify → Harmony → Yakabod →
+Herakify, `.next-project` teasers all point the right direction).
+Harmony's `harmony-profile-2.png` / `harmony-events-2.png` got the same
+corner-transparency-plus-rename fix as `harmony-match-2.png` and
+`herakify-map-2.png` before them (four instances of this pattern now —
+see Gotchas for the flood-fill technique if a fifth comes up). `vercel.json`
+has `"cleanUrls": true` so the clean `/herakify` / `/harmony` / `/yakabod`
+paths resolve once actually deployed to Vercel; this remains unverified
 against a live deploy in this session (`vercel dev` needs a login this
-environment doesn't have). See Gotchas for implementation notes and
-**Intentional divergences from build-spec / Figma** above for what's
-deliberately off-spec and why.
+environment doesn't have) — the `.html` links work regardless of that.
+See Gotchas for implementation notes and **Intentional divergences from
+build-spec / Figma** above for what's deliberately off-spec and why.
 
 **Run `git log`/`git status` to see what is committed versus still in the
 working tree, and commit anything uncommitted before continuing.**
 
-Not started: the Harmony and Yakabod case study pages (template exists,
-content doesn't), the Multimedia gallery, mobile refinement beyond the
+Not started: the Multimedia gallery page, mobile refinement beyond the
 hamburger, and deploy.
