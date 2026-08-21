@@ -182,6 +182,17 @@ single column with hairlines between rows.
 **Challenge** — text first, then the supporting image field at full column
 width beneath. Field height auto, image at 84% of field height.
 
+> **Template divergence:** Challenge and Solution are no longer separate
+> full-width sections in the built template — they're consolidated into one
+> two-column beat (Challenge heading/marker/paragraph, then Solution
+> heading/marker/paragraph/chips, stacked in the same left-hand text column;
+> the Challenge image sits to the right, roughly parallel to the combined
+> text height). This mobile description (text, then Solution text, then the
+> image) still holds — the image is a separate DOM sibling positioned between
+> the two text blocks precisely so mobile stacking order stays Challenge →
+> image → Solution. See CLAUDE.md's case-study template section for the full
+> rationale and CSS approach.
+
 **Solution bands** — this is the most important one. Bands stay full-bleed
 edge to edge in the project accent, but:
 - Alternating direction is dropped — every band is image-then-text
@@ -223,7 +234,7 @@ Single page with anchor navigation, plus separate case study routes.
 | `/herakify` | Case study — accent `--ochre`. **Built** (`herakify.html`, routed via `vercel.json` clean URLs). This page is also the reusable case-study template — see CLAUDE.md. |
 | `/harmony` | Case study — accent `--jade`. **Built** (`harmony.html`, cloned from the Herakify template). |
 | `/yakabod` | Case study — accent `--muted`. **Built** (`yakabod.html`, cloned from the Herakify template). |
-| `/multimedia` | Gallery — accent `--vermillion` |
+| `/multimedia` | Gallery — accent `--vermillion`. **Built** (`multimedia.html`, distinct structure — not cloned from the case-study template. See CLAUDE.md). |
 | Resume | External PDF link, opens in new tab |
 
 Nav links: Home / Work / About / Resume.
@@ -312,7 +323,7 @@ All Yakabod graphics are 252 × 508 portrait, sitting on a `--bone` panel with
 | File | Placement |
 | :---- | :---- |
 | `yak-hero.png` | Hero |
-| `yak-challenge.png` | Challenge supporting image |
+| `yak-challenge-2.png` | Challenge supporting image (rebuilt from `yak-challenge.png` — the original had a nearly edge-to-edge panel with an asymmetric ~177px/1px margin around the grid graphic, not the 40px uniform padding this section specifies; recomposited onto a fresh transparent-background bone panel with true 40px padding on all sides) |
 | `yak-coverage.png` | Solution feature block 1 — Test Coverage |
 | `yak-defects.png` | Solution feature block 2 — Defect Tracking |
 | `yak-docs.png` | Solution feature block 3 — Documentation Standards |

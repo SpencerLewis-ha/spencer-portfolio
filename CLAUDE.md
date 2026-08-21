@@ -225,6 +225,93 @@ divergence is correct — the source doc is what's stale.
   built in around the flat graphic already). They're dropped into
   `.two-tone-field` / `.feature-band__media` exactly like every other
   project's phone-mockup images, no Yakabod-specific selectors anywhere.
+  **Exception found and fixed:** `yak-challenge.png` did NOT actually
+  have the uniform 40px padding this note assumes — its panel was
+  nearly edge-to-edge with the canvas and the grid graphic inside was
+  asymmetrically positioned (~177px empty margin on the left, ~1-5px on
+  every other side), which made it float with an apparent drop shadow
+  and uneven insets once placed in the landscape Challenge
+  `.two-tone-field` (that field's generic `height:85%; width:auto`
+  sizing, tuned for portrait phone mockups, exaggerated the asymmetry
+  further). Rebuilt as `assets/yak-challenge-2.png`: extracted the tight
+  grid-content bounding box via pixel measurement (matching on the
+  ink/border-gray colours, not the bone/panel colours, since the panel
+  itself has almost no margin to measure against), then recomposited
+  it onto a fresh 608×605 canvas — true 40px bone padding on all four
+  sides, 4px radius, fully transparent outside the panel (not baked-in
+  corner colours) so it can't visually clash with whatever's behind it.
+  This also happens to make the asset nearly square, which is why it
+  now sits flush in the two-tone field without any CSS changes. If
+  another Yakabod graphic ever looks off, check its actual padding
+  with a pixel measurement before assuming this note covers it — it
+  clearly doesn't cover all of them.
+- **Solution feature-band text inset — `.feature-band--reverse
+  .feature-band__text` needed explicit `padding-left: var(--space-xl)`
+  (added ≥1200px alongside its `grid-column: 1 / 7`)** — without it, the
+  reversed block's text sits flush against the container's own edge
+  padding (48px, same as the *media*'s inset in the non-reversed
+  blocks), while the non-reversed blocks' text sits inset ~640-850px
+  (pushed over by the media column + gap). Side by side that reads as
+  "block 2's text has no breathing room" even though nothing was
+  technically broken — it's an unavoidable consequence of a literal
+  grid mirror (reflecting `media:1/6, text:7/13` around the row's
+  centre naturally swaps which element ends up flush against the row's
+  own edge). Fixed by giving the reversed text a flat `--space-xl`
+  (96px) left padding so it reads with comparable breathing room to the
+  non-reversed blocks. This lives in the shared `.feature-band--reverse`
+  rule in `styles.css`, so it applies to all three case studies
+  automatically — verified holding on Herakify, Harmony, and Yakabod.
+- **Challenge + Solution consolidated into one section, per case study
+  (template-level change, all three)** — see "Challenge + Solution
+  consolidation" below.
+
+### Challenge + Solution consolidation (template-level, all three case studies)
+
+Build-spec §7/§5.3 originally describes Challenge and Solution as two
+separate full-width sections (Challenge: text + image field; Solution:
+text + chips, no field, `.content-section--no-field`). The built
+template now merges them into **one scannable two-column beat**: the
+Challenge heading/marker/paragraph and the Solution heading/marker/
+paragraph/chips both sit stacked in the same left-hand text column,
+with the Challenge image on the right, roughly parallel in height to
+the combined text. `.content-section--no-field` and the second
+`<section>` are gone — there's only one `.content-section` per case
+study now, containing **three** direct grid children in this DOM order:
+
+```html
+<section class="content-section grid reveal">
+  <div class="content-section__text">          <!-- Challenge copy -->
+  <div class="content-section__field two-tone-field">  <!-- image -->
+  <div class="content-section__text content-section__text--solution">  <!-- Solution copy + chips -->
+</section>
+```
+
+The image is a DOM sibling **between** the two text blocks, not nested
+inside either — this is deliberate, not incidental. It's what makes
+both layouts work with the same markup:
+
+- **Mobile (no explicit grid-row):** all three are `grid-column: 1/-1`
+  and just stack in DOM order — Challenge text → image → Solution
+  text+chips, matching the original mobile spec's order.
+- **Desktop (≥1200px):** `.content-section__text` gets
+  `grid-column:1/8; grid-row:1`, `.content-section__text--solution`
+  overrides to `grid-row:2` (same column, `margin-top: var(--space-l)`
+  for a clear but tight break), and `.content-section__field` gets
+  `grid-column:8/13; grid-row: 1 / span 2` — spanning both rows so its
+  own square aspect-ratio height doesn't force row 1 to expand and
+  push the Solution block down away from the Challenge paragraph. This
+  was the key discovery: without the row-span, auto-placement (or even
+  an explicit single `grid-row:1` on the field) makes row 1's height
+  match the field's own square dimension, which is usually taller than
+  the short Challenge paragraph alone — leaving an ugly gap before
+  Solution starts. Spanning both rows lets the field sit tall on the
+  right while the text column flows tightly on the left, independent
+  of the field's height.
+
+If a 4th case study is ever built from this template, copy this
+three-child pattern exactly — don't reintroduce the two-section
+version, and don't collapse the image back into a single nested div
+inside the text block (that breaks the mobile stacking order).
 
 ## Working method (follow this)
 
@@ -280,9 +367,9 @@ study ever needs this same treatment, repeat the same process:
    case study, and isn't part of this template at all).
 5. Update the homepage's project-band link for that project to the
    `.html` form (`href="harmony.html"`, not `/harmony` — see Gotchas).
-   All three case-study links are done; Multimedia's homepage link is
-   still the unfixed `/multimedia` clean-URL form since that page isn't
-   built yet.
+   All four project-band links are now on the `.html` form, including
+   Multimedia's (`multimedia.html`) — that page is a distinct structure,
+   not a template clone, see its own section below.
 6. Re-verify at 1200/1349/1680/390px per the working method below.
    `.two-tone-field--intro`'s 4:5 desktop / square mobile aspect override
    has now been confirmed against three different hero image aspect
@@ -296,15 +383,15 @@ study ever needs this same treatment, repeat the same process:
 not squeezed between it and the title, see Intentional divergences —
 title, description, `.two-tone-field--intro` hero image) →
 `.details-strip` (4 hairline cells, self-adapting 1/2/4-column via the
-border-on-every-cell technique — see Gotchas) → `.content-section` ×2
-(Challenge with a supporting `.two-tone-field`, Solution without one —
-add `.content-section--no-field`) → `.feature-bands` (full-bleed accent,
-3× `.feature-band`, add `.feature-band--reverse` to alternate) →
-`.impact` (`.section-marker`, `.metric-block` ×3, then
-**`.impact__details`** wrapping `.impact__body` + `.learned`
-side-by-side at ≥1200px — see Intentional divergences) →
-`.next-project` (bone-deep background) → the homepage's `.footer`, reused
-as-is.
+border-on-every-cell technique — see Gotchas) → **one consolidated
+`.content-section`** (Challenge + Solution merged — see "Challenge +
+Solution consolidation" divergence below for the full markup/CSS
+pattern) → `.feature-bands` (full-bleed accent, 3× `.feature-band`, add
+`.feature-band--reverse` to alternate) → `.impact` (`.section-marker`,
+`.metric-block` ×3, then **`.impact__details`** wrapping
+`.impact__body` + `.learned` side-by-side at ≥1200px — see Intentional
+divergences) → `.next-project` (bone-deep background) → the homepage's
+`.footer`, reused as-is.
 
 **Routing:** `vercel.json` has `"cleanUrls": true`, so all three case
 study pages serve at both their `.html` path and the clean-URL form
@@ -317,6 +404,82 @@ needs a login this environment doesn't have) — confirm clean-URL
 routing actually resolves once this branch is deployed, don't assume
 the config is sufficient on
 faith alone.
+
+## Multimedia gallery — distinct page structure (`multimedia.html`)
+
+**Not cloned from the case-study template — built from scratch**, per
+the standing instruction that this page has its own shape. It reuses
+the site's nav, footer, design tokens, and self-hosted fonts (all
+identical `<head>`/nav/footer markup to the case studies), but every
+section in `<main>` is new. Accent is `--vermillion`, set via
+`<main class="gallery" style="--accent: var(--vermillion)">` — `.gallery`
+itself carries no rules, it's just the accent-variable scope, same
+pattern as `.case-study`.
+
+**Sections, top to bottom** (new classes, all in the `styles.css` block
+headed "Multimedia gallery — distinct page structure"):
+
+1. `.gallery-intro` — single column, no image field beside it (unlike
+   `.case-intro`). Order matches the reference exactly: back link →
+   category tag → mark → title → description. Note this is a
+   **different order from the case-study template's** intentional
+   mark-above-eyebrow divergence — Multimedia's mark sits *after* the
+   category tag, matching Figma's original order, because this page
+   was built fresh from the reference screenshot rather than
+   inheriting the case-study template's divergence.
+2. `.details-strip.details-strip--3` — reuses the shared
+   `.details-strip` component (already generic, used by every case
+   study) with a `--3` modifier overriding to `repeat(3, 1fr)` at
+   ≥1200px instead of the default `repeat(4, 1fr)`, since this page has
+   three cells (Mediums / Tools / Years) not four.
+3. `.motion` — full-width 16:9 image (`aspect-ratio: 16/9;
+   object-fit: cover`), caption row below (`.motion__caption`, flexbox
+   `justify-content: space-between` — title left, mono meta right),
+   description paragraph beneath that.
+4. `.visual-systems` — the `.triptych` (3-column grid ≥768px, single
+   column + 32px gap below that). **Important:** the three
+   `design-system-*.png` files are full moodboard compositions (colour
+   swatches + a large wordmark + tagline + a small label), not just a
+   swatch strip — display them at their own natural aspect ratio
+   (`width:100%; height:auto`), not force-cropped to a fixed aspect
+   with `object-fit:cover`. Cropping to 3:2 was the first attempt and
+   it cut the images down to two swatches and half a wordmark; the
+   reference thumbnail shows the *entire* composition scaled down, not
+   a crop. Mono caption (Wordmark / Poster / Instrument) beneath each,
+   shared description paragraph below all three.
+5. `.illustration-photo` — the `.duo` asymmetric two-up
+   (`multimedia-ink.jpg` + `multimedia-stage.jpeg`), `grid-template-
+   columns: 3fr 2fr` ≥900px with `.duo__item--offset` (the second item)
+   getting `margin-top: 64px` per build-spec §5.4's offset. Below
+   900px it drops to a single column with no offset, 64px gap between
+   items (`gap: var(--space-2xl)`). Each item has its own title/meta/
+   description in a `<figcaption>`.
+
+**Grid-blowout gotcha hit while building this:** giving triptych/duo
+items `width:100%` on the `<img>` was not enough to keep them inside
+their grid track — CSS Grid items default to `min-width: auto`, which
+factors in the image's *intrinsic* width (1552px for the design-system
+PNGs) as a floor, blowing the column width out and overflowing the
+viewport. Fixed with `min-width: 0` on `.triptych__item` and
+`.duo__item`. Same fix as the flex/grid "min-width:auto" gotcha
+generally — worth checking first any time an image inside a grid or
+flex item overflows its container despite `width:100%` on the image
+itself.
+
+**Homepage wiring:** the Multimedia project-band's link is now
+`href="multimedia.html"` (was the unfixed `/multimedia` clean-URL
+form, since the page didn't exist yet) — same relative-link pattern as
+the other three project bands.
+
+**Copy transcription note:** two mono meta captions (`Character
+Study`'s "3D Animation · Maya, 2025" and the triptych captions
+"Wordmark" / "Poster" / "Instrument") were transcribed from
+`screenshots/multimedia-gallery.png` at the outer limit of what's
+legible — that PNG is only 466px wide and this text renders at ~7px
+tall in it, right at the resolution floor. Read as confidently as
+possible via pixel-level crops and contrast enhancement, but if a
+higher-resolution reference ever surfaces, re-check these two spots
+specifically.
 
 ## Gotchas learned (don't rediscover these)
 
@@ -471,24 +634,23 @@ larger hero tagline/meta, a full About panel redesign, and now the hero
 jaguar re-centred in the space right of the text — see Intentional
 divergences for current numbers, don't trust earlier History for exact
 values on anything touched more than once). The Multimedia band's asset
-was swapped to a portrait image. Three of the four homepage project-band
-links now use the `.html` form (`herakify.html` / `harmony.html` /
-`yakabod.html`); Multimedia's is still the unfixed `href="/multimedia"`
-clean-URL path, since that page doesn't exist yet — give it the same
-`.html` fix whenever it's built.
+was swapped to a portrait image. **All four homepage project-band links
+now use the `.html` form** (`herakify.html` / `harmony.html` /
+`yakabod.html` / `multimedia.html`).
 
-**All three case-study pages are now built**: `herakify.html` (the
-original, and the reusable template — see "Case study template" above),
-`harmony.html` and `yakabod.html` (both cloned from it with zero
-structural changes, just content/accent/asset swaps — the template held
-up unchanged across both, including the mark-above-eyebrow intro order
-and Impact two-column layout). All three are wired together and into the
-homepage using the `.html` link form (Herakify → Harmony → Yakabod →
-Herakify, `.next-project` teasers all point the right direction).
-Harmony's `harmony-profile-2.png` / `harmony-events-2.png` got the same
-corner-transparency-plus-rename fix as `harmony-match-2.png` and
-`herakify-map-2.png` before them (four instances of this pattern now —
-see Gotchas for the flood-fill technique if a fifth comes up). `vercel.json`
+**All three case-study pages are built and consolidated**:
+`herakify.html` (the original, and the reusable template — see "Case
+study template" above), `harmony.html` and `yakabod.html` (both cloned
+from it — same structural pattern, content/accent/asset swaps, now
+including the merged Challenge+Solution section, see "Challenge +
+Solution consolidation" above). All three are wired together and into
+the homepage using the `.html` link form (Herakify → Harmony → Yakabod
+→ Herakify, `.next-project` teasers all point the right direction).
+Harmony's `harmony-profile-2.png` / `harmony-events-2.png` and
+Yakabod's `yak-challenge-2.png` got the same corner-transparency/
+rebuild-plus-rename pattern as `harmony-match-2.png` and
+`herakify-map-2.png` before them (five instances of this pattern now —
+see Gotchas for the flood-fill technique if a sixth comes up). `vercel.json`
 has `"cleanUrls": true` so the clean `/herakify` / `/harmony` / `/yakabod`
 paths resolve once actually deployed to Vercel; this remains unverified
 against a live deploy in this session (`vercel dev` needs a login this
@@ -496,8 +658,11 @@ environment doesn't have) — the `.html` links work regardless of that.
 See Gotchas for implementation notes and **Intentional divergences from
 build-spec / Figma** above for what's deliberately off-spec and why.
 
+**The Multimedia gallery (`multimedia.html`) is now built** — a distinct
+page structure, not a case-study template clone. See "Multimedia
+gallery — distinct page structure" above for its sections and gotchas.
+
 **Run `git log`/`git status` to see what is committed versus still in the
 working tree, and commit anything uncommitted before continuing.**
 
-Not started: the Multimedia gallery page, mobile refinement beyond the
-hamburger, and deploy.
+Not started: mobile refinement beyond the hamburger, and deploy.
