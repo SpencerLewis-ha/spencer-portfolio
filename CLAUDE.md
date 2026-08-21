@@ -714,6 +714,18 @@ build-spec / Figma** above for what's deliberately off-spec and why.
 page structure, not a case-study template clone. See "Multimedia
 gallery — distinct page structure" above for its sections and gotchas.
 
+**Resume link fixed:** every page's nav AND footer "Resume" link now
+points to `spencer-lewis-design-resume.pdf` (Spencer's newer resume,
+with small edits, pulled in from `~/Desktop/portfolio assets/` — that
+folder is where Spencer stages new assets before they're brought into
+the repo, worth checking there first for future asset requests). The
+file actually lives at the **project root**, not in `assets/` — same
+place the old `resume.pdf` was, despite build-spec/task language
+sometimes calling it an "assets/" file. The old `resume.pdf` is left in
+place, untouched and fully unreferenced (confirmed via grep across all
+HTML/JSON) — don't delete it without being asked, but don't wire
+anything to it either.
+
 **Run `git log`/`git status` to see what is committed versus still in the
 working tree, and commit anything uncommitted before continuing.**
 
