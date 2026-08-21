@@ -524,6 +524,13 @@ body {
   transition: transform 300ms ease-out;
 }
 
+/* Self-contained bone-panel graphics (not a phone mockup meant to
+   straddle the two-tone split) should sit truly centred instead of at
+   the 42% straddle point — see CLAUDE.md, yak-challenge-2.png. */
+.two-tone-field--centered img {
+  left: 50%;
+}
+
 /* ---------------------------------------------------------------- */
 /* Project mark                                                      */
 /* ---------------------------------------------------------------- */
@@ -922,14 +929,12 @@ body {
 .details-strip {
   grid-template-columns: 1fr;
   gap: 0;
-  border-top: 1px solid var(--border);
-  border-left: 1px solid var(--border);
-  margin-top: var(--space-l);
+  margin: var(--space-l) 0 0 1px;
 }
 
 .details-strip__cell {
-  border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  border: 1px solid var(--border);
+  margin: -1px 0 0 -1px;
   padding: var(--space-m);
 }
 
@@ -1308,6 +1313,11 @@ body {
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: var(--radius-sm);
+  /* multimedia-animation.png is native 882x494 — capping here keeps it at
+     or under 1x so it doesn't upscale/soften; see CLAUDE.md. A higher-res
+     export would be needed to safely go wider or support retina. */
+  max-width: 882px;
+  margin-inline: auto;
 }
 
 .motion__media img {

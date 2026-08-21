@@ -240,11 +240,17 @@ divergence is correct — the source doc is what's stale.
   it onto a fresh 608×605 canvas — true 40px bone padding on all four
   sides, 4px radius, fully transparent outside the panel (not baked-in
   corner colours) so it can't visually clash with whatever's behind it.
-  This also happens to make the asset nearly square, which is why it
-  now sits flush in the two-tone field without any CSS changes. If
-  another Yakabod graphic ever looks off, check its actual padding
-  with a pixel measurement before assuming this note covers it — it
-  clearly doesn't cover all of them.
+  This also makes the asset nearly square, which fixed the overflow/
+  shadow problem — but it still needed one CSS change to actually
+  centre: `.two-tone-field img`'s default `left: 42%` is tuned for
+  images meant to straddle the field's two-tone split, not for a
+  self-contained panel graphic like this one, so it rendered ~40px
+  off-centre until a `.two-tone-field--centered` modifier (`left: 50%`)
+  was added and applied to this field specifically — see the Gotchas
+  entry on `.two-tone-field img`'s 42% positioning for the full
+  explanation. If another Yakabod graphic ever looks off, check its
+  actual padding AND its centering with a pixel measurement before
+  assuming either is already covered — neither note covers all of them.
 - **Solution feature-band text inset — `.feature-band--reverse
   .feature-band__text` needed explicit `padding-left: var(--space-xl)`
   (added ≥1200px alongside its `grid-column: 1 / 7`)** — without it, the
@@ -432,10 +438,21 @@ headed "Multimedia gallery — distinct page structure"):
    study) with a `--3` modifier overriding to `repeat(3, 1fr)` at
    ≥1200px instead of the default `repeat(4, 1fr)`, since this page has
    three cells (Mediums / Tools / Years) not four.
-3. `.motion` — full-width 16:9 image (`aspect-ratio: 16/9;
-   object-fit: cover`), caption row below (`.motion__caption`, flexbox
+3. `.motion` — 16:9 image (`aspect-ratio: 16/9; object-fit: cover`),
+   caption row below (`.motion__caption`, flexbox
    `justify-content: space-between` — title left, mono meta right),
-   description paragraph beneath that.
+   description paragraph beneath that. `.motion__media` is capped at
+   `max-width: 882px` (with `margin-inline: auto` to stay centred) —
+   `multimedia-animation.png` is native 882×494, and at the section's
+   full grid width (1584px at 1680px viewport) it was being upscaled
+   ~1.8x, rendering visibly soft/pixelated. Capping at native width
+   keeps it at 1.0x on every desktop breakpoint (confirmed 1200/1349/
+   1680 all render at exactly 882px now); mobile still scales it down,
+   which never causes blur. **This is a resolution ceiling, not just a
+   style choice** — if the section is ever widened further, or needs to
+   look sharp on retina displays (which would need 1764px+ to stay
+   crisp at 2x), a higher-resolution export of the animation still
+   needs to come from Spencer. Don't quietly raise the cap without one.
 4. `.visual-systems` — the `.triptych` (3-column grid ≥768px, single
    column + 32px gap below that). **Important:** the three
    `design-system-*.png` files are full moodboard compositions (colour
@@ -483,6 +500,41 @@ specifically.
 
 ## Gotchas learned (don't rediscover these)
 
+- **Details-strip border: don't put the frame on the container when the
+  container has its own `padding-inline`** (shared component, fixed once,
+  applies to all four pages that use `.details-strip` — Herakify, Harmony,
+  Yakabod, Multimedia). The original approach put `border-top`/`border-left`
+  on `.details-strip` itself and `border-right`/`border-bottom` on every
+  `.details-strip__cell`, expecting the two to meet and form one box. They
+  didn't: `.details-strip` also carries `class="grid"`, which sets
+  `padding-inline: clamp(24px, 4vw, 48px)` on the container — and a border
+  draws at the OUTER edge of that padding, while the grid *cells* (its
+  children) sit *inset* inside the padding. So the container's own
+  border-top/border-left was a fixed 24-48px away from where the cells
+  actually started, leaving the right side with no edge at all (the
+  container had no border-right to begin with) and the bottom rule
+  stopping short of the last cell. Fixed by removing the border from
+  `.details-strip` entirely and giving every `.details-strip__cell` a full
+  `border: 1px solid var(--border)`, then `margin: -1px 0 0 -1px` on the
+  cells (with a compensating `margin: ... 0 0 1px` on the container) so
+  adjacent cells' borders overlap into a single hairline instead of
+  doubling — a standard border-collapse-without-`border-collapse` trick
+  that works at any column count (4 cols for case studies, 3 for
+  Multimedia's `--3` modifier) and any wrap point, with no per-breakpoint
+  `nth-child` logic needed. If a future component needs a bordered grid
+  like this, use this pattern, not the container+cells split.
+- **`.two-tone-field img`'s `left: 42%` is only correct for images meant
+  to straddle the field's 39/61 two-tone split** (phone mockups, mainly)
+  — it is NOT a general-purpose centering value. `yak-challenge-2.png`
+  (the rebuilt Yakabod Challenge graphic — see the Intentional
+  divergences entry) is a self-contained bone-panel graphic, not a
+  mockup meant to straddle anything, so at 42% it rendered ~40px off-
+  centre (overflowing the left edge slightly, ~78px of dead space on the
+  right). Added a `.two-tone-field--centered` modifier (`left: 50%`) and
+  applied it to that one field in `yakabod.html`. Don't apply this
+  modifier to the OTHER `.two-tone-field` usages (Herakify's
+  `herakify-challenge.png`, the intro hero fields) — those are portrait
+  mockups that correctly want the 42% straddle per build-spec §7.
 - **Nav alignment + background:** the nav must be a full-bleed bone bar
   (background spans 100% width) with an **inner wrapper**
   (`max-width: 1680px; margin-inline: auto` — same max-width as `.grid`, kept
