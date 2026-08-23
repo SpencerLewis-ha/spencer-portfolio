@@ -1,77 +1,129 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Multimedia &mdash; Spencer Lewis</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <title>Multimedia — Spencer Lewis</title>
+  <link rel="preload" href="assets/fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/archivo-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-  <div class="fixed-overlay">
-    <a href="https://www.linkedin.com/in/spencerhlewis" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-        <rect x="2" y="9" width="4" height="12"/>
-        <circle cx="4" cy="4" r="2"/>
-      </svg>
-    </a>
-    <a href="Spencer Lewis - Resume.pdf" target="_blank" rel="noopener noreferrer" aria-label="Resume">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-        <polyline points="14 2 14 8 20 8"/>
-        <line x1="16" y1="13" x2="8" y2="13"/>
-        <line x1="16" y1="17" x2="8" y2="17"/>
-      </svg>
-    </a>
-  </div>
-
-  <nav class="detail-nav">
-    <a href="index.html" class="back-link">&larr; Back</a>
+  <nav class="nav" aria-label="Primary">
+    <div class="nav__inner">
+      <a class="nav__logo meta" href="/">Spencer Lewis</a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+      </button>
+      <ul class="nav__links" id="nav-menu">
+        <li><a class="label" href="/">Home</a></li>
+        <li><a class="label" href="/#work">Work</a></li>
+        <li><a class="label" href="/#about">About</a></li>
+        <li><a class="label" href="spencer-lewis-design-resume.pdf" target="_blank" rel="noopener">Resume</a></li>
+      </ul>
+    </div>
   </nav>
 
-  <main class="detail-hero">
-    <div class="detail-images">
-      <div class="detail-multi-image">
-        <img src="images/Frame.png" alt="Performance photography">
+  <main class="gallery" style="--accent: var(--vermillion)">
+    <section class="gallery-intro grid reveal">
+      <a class="gallery-intro__back label" href="/#work">← Back</a>
+      <p class="gallery-intro__category label">Animation / Illustration</p>
+      <div class="project-mark">
+        <img src="assets/mark-multimedia.svg" alt="" width="22" height="38">
       </div>
-    </div>
+      <h1 class="gallery-intro__title display-l">Multimedia</h1>
+      <p class="gallery-intro__description body-l reading-column">Animation, illustration, and music as a design practice. Working outside the screen has shaped how I think about pacing, contrast, and what makes something feel intentional rather than assembled.</p>
+    </section>
 
-    <div class="detail-content">
-      <h1>Multimedia</h1>
+    <section class="details-strip details-strip--3 grid reveal">
+      <div class="details-strip__cell">
+        <p class="details-strip__label label">Mediums</p>
+        <p class="details-strip__value meta">3D Animation, Illustration, Photography, Music</p>
+      </div>
+      <div class="details-strip__cell">
+        <p class="details-strip__label label">Tools</p>
+        <p class="details-strip__value meta">Maya, Procreate, Ableton, Rekordbox</p>
+      </div>
+      <div class="details-strip__cell">
+        <p class="details-strip__label label">Years</p>
+        <p class="details-strip__value meta">2021–2026</p>
+      </div>
+    </section>
 
-      <div class="detail-section">
-        <div class="section-label">
-          <span class="section-num">1</span>
-          <span class="section-name">Challenge</span>
+    <section class="motion reveal">
+      <div class="motion__inner grid">
+        <p class="gallery-label label">Motion</p>
+        <div class="motion__media">
+          <img src="assets/multimedia-animation.png" alt="Two silhouetted figures facing off in red and blue light, surrounded by floating circles" width="882" height="494" loading="lazy">
         </div>
-        <p>UI/UX design increasingly requires fluency in motion, narrative, and visual communication &mdash; skills that aren&rsquo;t always taught alongside traditional product design coursework.</p>
-      </div>
-
-      <div class="detail-section">
-        <div class="section-label">
-          <span class="section-num">2</span>
-          <span class="section-name">Solution</span>
+        <div class="motion__caption">
+          <h2 class="motion__title h2">Character Study</h2>
+          <p class="motion__meta meta">3D Animation · Maya, 2025</p>
         </div>
-        <p>Through UVA coursework and personal projects, I built experience in 3D animation and MEL scripting in Maya, 2D illustration in Procreate, narrative screenwriting, and music production in Rekordbox and Ableton &mdash; deliberately choosing projects that pushed me outside purely screen-based design.</p>
+        <p class="motion__description body reading-column">A short animated sequence built around silhouette and colour separation — two figures reading clearly against a dark stage with almost no detail.</p>
       </div>
+    </section>
 
-      <div class="detail-section">
-        <div class="section-label">
-          <span class="section-num">3</span>
-          <span class="section-name">Impact</span>
+    <section class="visual-systems reveal">
+      <div class="visual-systems__inner grid">
+        <p class="gallery-label label">Visual Systems</p>
+        <div class="triptych">
+          <figure class="triptych__item">
+            <img src="assets/design-system-1.png" alt="First visual system exploration: black, red, green, gold, and grey swatches with a serif Spencer Lewis wordmark" width="1552" height="976" loading="lazy">
+            <figcaption class="triptych__caption meta">Wordmark</figcaption>
+          </figure>
+          <figure class="triptych__item">
+            <img src="assets/design-system-2.png" alt="Second visual system exploration: black, orange, blue, grey swatches with a bold condensed Spencer Lewis poster mark" width="1552" height="976" loading="lazy">
+            <figcaption class="triptych__caption meta">Poster</figcaption>
+          </figure>
+          <figure class="triptych__item">
+            <img src="assets/design-system-3.png" alt="Third visual system exploration: black, orange, white, and grey swatches with a bold sans Spencer Lewis instrument mark" width="1552" height="976" loading="lazy">
+            <figcaption class="triptych__caption meta">Instrument</figcaption>
+          </figure>
         </div>
-        <p>Working across these mediums has fundamentally changed how I think about interaction design &mdash; giving me a storyteller&rsquo;s instinct for pacing, contrast, and what makes an experience feel intentional rather than assembled.</p>
+        <p class="visual-systems__description body reading-column">Three visual directions explored for this site, each a complete colour and type system. The first one is what you're looking at.</p>
       </div>
-    </div>
+    </section>
+
+    <section class="illustration-photo reveal">
+      <div class="illustration-photo__inner grid">
+        <p class="gallery-label label">Illustration &amp; Photography</p>
+        <div class="duo">
+          <figure class="duo__item">
+            <img src="assets/multimedia-ink.jpg" alt="Black and grey ink illustration of a robed figure surrounded by abstract foliage" width="1513" height="1154" loading="lazy">
+            <figcaption>
+              <h3 class="duo__title h2">Untitled</h3>
+              <p class="duo__meta meta">Digital Ink · Procreate, 2025</p>
+              <p class="duo__description body">Brush and line study working entirely in black and grey, pushing how much weight a single stroke can carry.</p>
+            </figcaption>
+          </figure>
+          <figure class="duo__item duo__item--offset">
+            <img src="assets/multimedia-stage.jpeg" alt="A single dancer mid-motion on a stage lit entirely in blue" width="2422" height="2013" loading="lazy">
+            <figcaption>
+              <h3 class="duo__title h2">Stage</h3>
+              <p class="duo__meta meta">Photography, 2021</p>
+              <p class="duo__description body">A single figure held in a field of blue, with light doing most of the composition.</p>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <footer>
-    <p>&copy; 2026 Spencer Lewis | Designed &amp; Built with Intention</p>
+  <footer class="footer">
+    <div class="grid">
+      <ul class="footer__links">
+        <li><a class="label" href="mailto:spencerhlewis2003@gmail.com">Email</a></li>
+        <li><a class="label" href="https://linkedin.com/in/spencerhlewis" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a class="label" href="spencer-lewis-design-resume.pdf" target="_blank" rel="noopener">Resume</a></li>
+      </ul>
+      <p class="footer__copyright meta">© 2026 Spencer Lewis</p>
+    </div>
   </footer>
-
+  <script src="nav.js"></script>
+  <script src="reveal.js"></script>
 </body>
 </html>

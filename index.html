@@ -1,108 +1,165 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spencer Lewis</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <title>Spencer Lewis — Product Designer</title>
+  <link rel="preload" href="assets/fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/archivo-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-  <div class="fixed-overlay">
-    <a href="https://www.linkedin.com/in/spencerhlewis" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-        <rect x="2" y="9" width="4" height="12"/>
-        <circle cx="4" cy="4" r="2"/>
-      </svg>
-    </a>
-    <a href="Spencer Lewis - Resume.pdf" target="_blank" rel="noopener noreferrer" aria-label="Resume">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-        <polyline points="14 2 14 8 20 8"/>
-        <line x1="16" y1="13" x2="8" y2="13"/>
-        <line x1="16" y1="17" x2="8" y2="17"/>
-      </svg>
-    </a>
-  </div>
-
-  <section class="landing">
-    <img src="images/landing-image.png" alt="Spencer Lewis" class="landing-image">
-    <h1>SPENCER LEWIS</h1>
-    <p>Spencer Lewis is a recent Computer Science graduate from the University of Virginia. My mission is to use storytelling to design useful and inspiring products and media.</p>
-    <div class="landing-links">
-      <a href="https://www.linkedin.com/in/spencerhlewis" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-          <rect x="2" y="9" width="4" height="12"/>
-          <circle cx="4" cy="4" r="2"/>
-        </svg>
-      </a>
-      <a href="Spencer Lewis - Resume.pdf" target="_blank" rel="noopener noreferrer" aria-label="Resume">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <line x1="16" y1="13" x2="8" y2="13"/>
-          <line x1="16" y1="17" x2="8" y2="17"/>
-        </svg>
-      </a>
+  <nav class="nav" aria-label="Primary">
+    <div class="nav__inner">
+      <a class="nav__logo meta" href="/">Spencer Lewis</a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+      </button>
+      <ul class="nav__links" id="nav-menu">
+        <li><a class="label" href="/">Home</a></li>
+        <li><a class="label" href="/#work">Work</a></li>
+        <li><a class="label" href="/#about">About</a></li>
+        <li><a class="label" href="spencer-lewis-design-resume.pdf" target="_blank" rel="noopener">Resume</a></li>
+      </ul>
     </div>
-  </section>
-
-  <section class="projects">
-
-    <div class="project-card">
-      <div class="project-image">
-        <img src="images/herakify-landing.png" alt="Herakify app mockup">
+  </nav>
+  <main>
+    <section class="hero grid">
+      <div class="hero__intro">
+        <h1 class="hero__name display-xl">Spencer Lewis</h1>
+        <p class="hero__tagline body-l reading-column">I use storytelling to design products and media that inspire a better future.</p>
+        <p class="hero__meta meta">Product Designer · Washington DC · 2026</p>
       </div>
-      <div class="project-text">
-        <h2>Herakify</h2>
-        <p>Tourists in Heraklion lacked a way to meaningfully engage with museum exhibits beyond static displays. Through 15+ user research sessions, I designed and prototyped a high-fidelity mobile app with personalized quizzes, interactive maps, and an AI chat &mdash; iterating on every feature until it was clear and intuitive.</p>
-        <a href="herakify.html" class="more-info">More Info &rsaquo;</a>
+      <div class="hero__image">
+        <div class="hero__image-inner">
+          <img src="assets/jaguar-vermillion-clean.png" alt="Illustrated jaguar head in vermillion" width="1200" height="1200">
+          <p class="hero__caption meta">Personal Work · Image Editing</p>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="project-card">
-      <div class="project-image">
-        <img src="images/harmony-landing.png" alt="Harmony app mockup">
+    <section id="work" class="work">
+      <div class="grid">
+        <h2 class="work__label label">Selected Work</h2>
       </div>
-      <div class="project-text">
-        <h2>Harmony</h2>
-        <p>Passionate about music, I designed a high-fidelity mobile prototype for a social platform built around musical connection &mdash; featuring a personalized quiz, artist profiles, chat, and collaboration tools.</p>
-        <a href="harmony.html" class="more-info">More Info &rsaquo;</a>
-      </div>
-    </div>
 
-    <div class="project-card">
-      <div class="project-image">
-        <img src="images/yakabod-test-log.png" alt="Yakabod test log interface">
-      </div>
-      <div class="project-text">
-        <h2>Yakabod</h2>
-        <p>Gaps in test coverage were creating release risk for a growing enterprise product. I executed 500+ tests across regression, integration, and feature validation workflows, contributed to automation efforts, and helped establish documentation standards that made the team&rsquo;s process more reliable and repeatable.</p>
-        <a href="yakabod.html" class="more-info">More Info &rsaquo;</a>
-      </div>
-    </div>
+      <article class="project-band grid" style="--accent: var(--ochre)">
+        <a class="project-band__link" href="herakify.html" aria-label="View Herakify case study: Turning a disorienting museum visit into a guided one">
+          <div class="project-band__field two-tone-field">
+            <img src="assets/herakify-map-2.png" alt="Herakify wayfinding map interface on a phone screen" width="808" height="1690" loading="lazy">
+          </div>
+          <div class="project-band__content">
+            <div class="project-mark">
+              <img src="assets/mark-herakify.svg" alt="" width="41" height="37">
+            </div>
+            <p class="project-band__category label">Mobile / Research-Led</p>
+            <h3 class="project-band__headline h2">Turning a disorienting museum visit into a guided one</h3>
+            <p class="project-band__name label">Herakify</p>
+            <ul class="project-band__chips">
+              <li class="chip label">User Research</li>
+              <li class="chip label">Interaction Design</li>
+              <li class="chip label">Prototyping</li>
+            </ul>
+            <span class="project-band__cta label">View Case Study</span>
+          </div>
+        </a>
+      </article>
 
-    <div class="project-card">
-      <div class="project-image">
-        <img src="images/newestimage.jpg" alt="Multimedia illustrations">
+      <article class="project-band project-band--reverse grid" style="--accent: var(--jade)">
+        <a class="project-band__link" href="harmony.html" aria-label="View Harmony case study: For musicians who want to collaborate, not just listen">
+          <div class="project-band__field two-tone-field">
+            <img src="assets/harmony-match-2.png" alt="Harmony musician matching interface on a phone screen" width="706" height="1448" loading="lazy">
+          </div>
+          <div class="project-band__content">
+            <div class="project-mark">
+              <img src="assets/mark-harmony.svg" alt="" width="40" height="28">
+            </div>
+            <p class="project-band__category label">Mobile / Multi-Screen</p>
+            <h3 class="project-band__headline h2">For musicians who want to collaborate, not just listen</h3>
+            <p class="project-band__name label">Harmony</p>
+            <ul class="project-band__chips">
+              <li class="chip label">Product Design</li>
+              <li class="chip label">Design Systems</li>
+              <li class="chip label">Prototyping</li>
+            </ul>
+            <span class="project-band__cta label">View Case Study</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="project-band grid" style="--accent: var(--muted)">
+        <a class="project-band__link" href="yakabod.html" aria-label="View Yakabod case study: Learning where design decisions break down in engineering">
+          <div class="project-band__field two-tone-field">
+            <img src="assets/yak-hero.png" alt="Yakabod test coverage dashboard on a phone screen" width="598" height="1202" loading="lazy">
+          </div>
+          <div class="project-band__content">
+            <div class="project-mark">
+              <img src="assets/mark-yakabod.svg" alt="" width="34" height="34">
+            </div>
+            <p class="project-band__category label">Enterprise / Engineering</p>
+            <h3 class="project-band__headline h2">Learning where design decisions break down in engineering</h3>
+            <p class="project-band__name label">Yakabod</p>
+            <ul class="project-band__chips">
+              <li class="chip label">QA</li>
+              <li class="chip label">Agile</li>
+              <li class="chip label">Documentation</li>
+            </ul>
+            <span class="project-band__cta label">View Case Study</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="project-band project-band--reverse grid" style="--accent: var(--vermillion)">
+        <a class="project-band__link" href="multimedia.html" aria-label="View Multimedia gallery: Animation, illustration, and music as a design practice">
+          <div class="project-band__field two-tone-field">
+            <img src="assets/multimedia-landingpage.png" alt="Ink illustration of three figures, one holding an umbrella" width="1939" height="2400" loading="lazy">
+          </div>
+          <div class="project-band__content">
+            <div class="project-mark">
+              <img src="assets/mark-multimedia.svg" alt="" width="22" height="38">
+            </div>
+            <p class="project-band__category label">Animation / Illustration</p>
+            <h3 class="project-band__headline h2">Animation, illustration, and music as a design practice</h3>
+            <p class="project-band__name label">Multimedia</p>
+            <ul class="project-band__chips">
+              <li class="chip label">3D Animation</li>
+              <li class="chip label">Illustration</li>
+              <li class="chip label">Photography</li>
+            </ul>
+            <span class="project-band__cta label">View Case Study</span>
+          </div>
+        </a>
+      </article>
+    </section>
+
+    <section id="about" class="about">
+      <div class="about__inner">
+        <div class="about__image">
+          <img src="assets/portrait.jpg" alt="Portrait of Spencer Lewis outdoors" width="856" height="998" loading="lazy">
+        </div>
+        <div class="about__content">
+          <h2 class="about__label">About Me</h2>
+          <p class="about__paragraph body">I'm a product designer based in Washington, DC with a background in traditional computer science and programming. Through my course work I've come to have a deep understanding of storytelling and human-centered design.</p>
+          <p class="about__paragraph body">My focus is on understanding products and consumers, in order to create designs which live and breathe their stories.</p>
+          <p class="about__paragraph body">My passion for design extends to my everyday life in which I explore nature, watch films/tv, and draw in a variety of mediums.</p>
+        </div>
       </div>
-      <div class="project-text">
-        <h2>Multimedia</h2>
-        <p>Driven by a passion for film and drawing, I&rsquo;ve developed skills across a variety of mediums including 2D and 3D animation, digital art, and more &mdash; building an appreciation for the tools that make impactful media possible.</p>
-        <a href="multimedia.html" class="more-info">More Info &rsaquo;</a>
+    </section>
+
+    <footer class="footer">
+      <div class="grid">
+        <ul class="footer__links">
+          <li><a class="label" href="mailto:spencerhlewis2003@gmail.com">Email</a></li>
+          <li><a class="label" href="https://linkedin.com/in/spencerhlewis" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a class="label" href="spencer-lewis-design-resume.pdf" target="_blank" rel="noopener">Resume</a></li>
+        </ul>
+        <p class="footer__copyright meta">© 2026 Spencer Lewis</p>
       </div>
-    </div>
-
-  </section>
-
-  <footer>
-    <p>&copy; 2026 Spencer Lewis | Designed &amp; Built with Intention</p>
-  </footer>
-
+    </footer>
+  </main>
+  <script src="nav.js"></script>
 </body>
 </html>
