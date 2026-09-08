@@ -1206,17 +1206,17 @@ body {
   margin-top: var(--space-m);
 }
 
-/* Closing block — the conclusion of the case study, so it's promoted to
-   a full-width, centred statement rather than a sidebar footnote. See
-   CLAUDE.md ("What I Learned" placement) for the template-level change. */
+/* Closing block — the conclusion of the case study, sitting directly
+   beneath the Impact paragraph as its final beat. Left-aligned, same
+   reading column as the paragraph above (not centred, not full-width),
+   with the page's vertical accent-border motif carried through (not a
+   one-off horizontal rule). See CLAUDE.md ("What I Learned" placement)
+   for the template-level change. */
 .learned {
   grid-column: 1 / -1;
   max-width: 640px;
-  margin-inline: auto;
-  margin-top: var(--space-2xl);
-  padding-top: var(--space-l);
-  border-top: 1px solid var(--accent);
-  text-align: center;
+  border-left: 3px solid var(--accent);
+  padding-left: var(--space-m);
 }
 
 .learned__label {
