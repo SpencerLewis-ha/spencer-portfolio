@@ -368,39 +368,66 @@ the old three-marker one — `01 Challenge / 02 Research / 03 Solution /
 04 Impact`, with the Solution marker living in `.feature-bands__intro`
 rather than in the merged `.content-section`.
 
-### "What I Learned" — full-width centred closing block, tried and reverted (template-level, all three case studies)
+### "What I Learned" — large serif closing statement (template-level, all three case studies)
 
-**History, in order, so this doesn't get re-litigated a third time:**
+**History, in order — this component has been through four rounds, so
+don't re-litigate an earlier one blind:**
 
 1. Originally `.learned` sat inside `.impact__details`, side-by-side
    with `.impact__body` at ≥1200px (a 2-column grid) — a sidebar next
    to the main paragraph.
-2. Konrad-review pass promoted it to a full-width, **centred** closing
-   block at the end of `.impact`: `margin-inline: auto` to centre it,
-   `text-align: center`, a single `border-top: 1px solid var(--accent)`
-   hairline replacing the old left border, and a large
-   `margin-top: var(--space-2xl)` (192px, stacking on top of the
-   section's own `row-gap: var(--space-l)`) meant to read as a clear
-   final beat.
-3. **That was reverted the same week** — the centred/top-bordered
-   treatment broke consistency with the rest of the page (metrics and
-   body paragraph are left-aligned; the site's accent-border motif is
-   vertical, used nowhere else as a horizontal rule) and the 192px+48px
-   gap read as a dead space, not a transition. Current state is back to
+2. Promoted to a full-width, **centred** closing block: `margin-inline:
+   auto`, `text-align: center`, a `border-top: 1px solid var(--accent)`
+   hairline, and `margin-top: var(--space-2xl)` (192px, stacking on the
+   section's own `row-gap`).
+3. **Reverted** — centred/top-bordered broke consistency with the
+   left-aligned metrics/paragraph and the site's vertical-only accent-
+   border motif, and the gap read as dead space. Went back to
    **left-aligned, 3px `border-left: var(--accent)` + `padding-left:
-   var(--space-m)`** (the original pre-#2 treatment), same
-   `max-width: 640px` reading column as `.impact__body`, no
-   `margin-inline`, no `text-align`. Spacing from the paragraph above
-   is a **single `--space-l` (48px)** — that's the section's own
-   `row-gap`, doing all the work; `.learned` has **no margin-top of its
-   own**. Don't add one, it'll double the gap the same way #2 did.
+   var(--space-m)`**, `max-width: 640px`, spacing trimmed to a single
+   `--space-l` (relying on the section's own `row-gap`, no margin-top
+   of its own).
+4. **Current: bordered-callout treatment removed entirely, restyled as
+   a large serif statement** — no border, no rule, no panel of any
+   kind. The accent now lives *only* in the eyebrow label
+   (`.learned__label { color: var(--accent) }`), matching how every
+   other section marker on the page carries the accent in its numeral
+   rather than in a box or line. `.learned__body` is no longer styled
+   as body copy — it's `font-family: "Instrument Serif"`, the same
+   `28px` mobile / `36px` desktop sizing as the shared `.h2` token, but
+   with its own `line-height: 1.3` (h2's default 1.2 was too tight for
+   a multi-line paragraph-length statement) and `max-width: 1000px` (on
+   `.learned` itself) so it runs wider than the 640px body column and
+   fills the right-hand space without ever going edge-to-edge. Spacing
+   from the paragraph above reads as a full `--space-xl` (96px) —
+   `.learned`'s own `margin-top: var(--space-l)` (48px) plus the
+   section's automatic `row-gap: var(--space-l)` (48px) sum to that;
+   same "don't just add `--space-xl` directly, account for the
+   row-gap" arithmetic as round 3's `--space-l` target, just scaled up.
+   Intended hierarchy for the whole `.impact` section, largest to
+   smallest: metrics (`56px` serif numerals) → this closing statement
+   (`36px` serif) → body paragraph (`18px`) — the reflection is
+   deliberately the second-largest text in the section, clearly bigger
+   than the paragraph it follows.
 
-What's still true from #2 and hasn't been reverted: `.impact__details`
-is gone — `.impact__body` is a direct grid child of `.impact`
-(`grid-column: 1/-1; max-width: 640px`, left-aligned), and `.learned`
-is also a direct grid child (not nested in a wrapper), sitting after it
-in DOM order. `.learned__body`'s old hardcoded `font-size: 17px` is
-still removed, so it still picks up the case-study-wide 18px body bump.
+**Gotcha hit implementing round 4:** `.learned__body` still carried
+`class="body"` in the markup (left over from when it *was* styled as
+body copy). `.case-study .body { font-size: 18px }` (a compound
+selector, specificity (0,2,0)) silently overrode `.learned__body`'s own
+new `font-size` (a single class, specificity (0,1,0)) back down to
+18px — same kind of specificity trap as the details-strip border bug,
+just in font-size instead of border position. Fixed by removing the
+`body` class from the `<p class="learned__body">` markup entirely in
+all three case studies, since it's genuinely not body copy anymore.
+**If `.learned__body`'s size ever looks wrong again, check the class
+list on the element before touching the CSS** — a stray shared class
+with higher-specificity compound selectors elsewhere is the likely
+cause, not the rule you're looking at.
+
+`.impact__details` is gone (removed in round 2, still gone) —
+`.impact__body` is a direct grid child of `.impact` (`grid-column:
+1/-1; max-width: 640px`, left-aligned), and `.learned` is also a direct
+grid child (not nested in a wrapper), sitting after it in DOM order.
 
 If a case study's `.impact__body` paragraph runs long, split it into
 multiple `<p class="impact__body body">` siblings — no wrapper needed,
@@ -519,11 +546,13 @@ pattern) → `.feature-bands` (full-bleed accent, opens with
 `.feature-band`, add `.feature-band--reverse` to alternate — see the
 "Section relabel" divergence) → `.impact` (marker `04 / Impact`,
 `.metric-block` ×3, `.impact__body` paragraph(s), then **`.learned`**
-as its own left-aligned, left-bordered closing block directly beneath
-(single `--space-l` gap, no extra margin) — see the "'What I Learned'"
-divergence entry for the full history, this is NOT the old side-by-side
-`.impact__details` layout, and NOT the briefly-tried centred/top-border
-version either) →
+as a large serif closing statement (no border/rule/panel, accent lives
+in the eyebrow label only, `36px`/`28px` Instrument Serif body text,
+`--space-xl` gap from the paragraph above) — see the "'What I
+Learned'" divergence entry for the full four-round history, this is
+NOT the old side-by-side `.impact__details` layout, NOT the
+briefly-tried centred/top-border version, and NOT the left-border
+callout that came after that either) →
 `.next-project` (bone-deep background) → the homepage's `.footer`,
 reused as-is.
 

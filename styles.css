@@ -1206,25 +1206,39 @@ body {
   margin-top: var(--space-m);
 }
 
-/* Closing block — the conclusion of the case study, sitting directly
-   beneath the Impact paragraph as its final beat. Left-aligned, same
-   reading column as the paragraph above (not centred, not full-width),
-   with the page's vertical accent-border motif carried through (not a
-   one-off horizontal rule). See CLAUDE.md ("What I Learned" placement)
-   for the template-level change. */
+/* Closing block — the conclusion of the case study, read as a large
+   serif statement rather than a bordered callout. Left-aligned, same
+   left edge as the paragraph above; wider than the 640px reading
+   column (this is a short, large-type statement, not body copy) but
+   never edge to edge. No border/rule/panel — the accent lives only in
+   the eyebrow label, same as every other section marker on the page.
+   See CLAUDE.md ("What I Learned") for the template-level history. */
 .learned {
   grid-column: 1 / -1;
-  max-width: 640px;
-  border-left: 3px solid var(--accent);
-  padding-left: var(--space-m);
+  max-width: 1000px;
+  /* .impact's own row-gap contributes --space-l between grid rows
+     already; this adds the remainder so the total gap from the
+     paragraph above reads as a full --space-xl, not a stacked sum. */
+  margin-top: var(--space-l);
 }
 
 .learned__label {
-  color: var(--muted);
+  color: var(--accent);
 }
 
 .learned__body {
+  font-family: "Instrument Serif", serif;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.3;
+  color: var(--ink);
   margin-top: var(--space-xs);
+}
+
+@media (min-width: 768px) {
+  .learned__body {
+    font-size: 36px;
+  }
 }
 
 @media (min-width: 768px) {
