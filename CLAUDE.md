@@ -368,35 +368,46 @@ the old three-marker one — `01 Challenge / 02 Research / 03 Solution /
 04 Impact`, with the Solution marker living in `.feature-bands__intro`
 rather than in the merged `.content-section`.
 
-### "What I Learned" moved to a full-width closing block (template-level, all three case studies, Konrad-review pass)
+### "What I Learned" — full-width centred closing block, tried and reverted (template-level, all three case studies)
 
-Previously `.learned` sat inside `.impact__details`, side-by-side with
-`.impact__body` at ≥1200px (a 2-column grid) — a sidebar next to the
-main paragraph. Since it's the conclusion of the case study, it's been
-promoted to a full-width, **centred** block at the very end of
-`.impact`, after the metrics and body paragraph(s), with a generous
-`margin-top: var(--space-2xl)` (192px, plus the section's own
-`row-gap: var(--space-l)` on top of that — the two stack, which is
-intentional, it's meant to read as a clear final beat, not a
-continuation of the paragraph above it). `.impact__details` is gone
-entirely — `.impact__body` is now a direct grid child of `.impact`
-(`grid-column: 1/-1; max-width: 640px`, left-aligned same as every
-other paragraph on the page), and `.learned` is also a direct grid
-child, `max-width: 640px; margin-inline: auto` to centre it, with
-`text-align: center`. The old 3px `border-left: accent` callout-style
-border is gone too — replaced with a single `border-top: 1px solid
-var(--accent)` hairline above the block, read as a divider before the
-closing statement rather than a side-tab. `.learned__body`'s old
-hardcoded `font-size: 17px` was also removed (it was silently
-overriding the shared `.body` class it's also tagged with) so it picks
-up the case-study-wide 18px body bump below like everything else.
+**History, in order, so this doesn't get re-litigated a third time:**
 
-If Herakify's/a case study's `.impact__body` paragraph runs long,
-split it into multiple `<p class="impact__body body">` siblings — no
-wrapper needed, each instance's own `margin-top: var(--space-m)`
-provides natural paragraph spacing from the one before it (Herakify's
-impact body is a 2-paragraph example of this, split for the
-scannability pass — see below).
+1. Originally `.learned` sat inside `.impact__details`, side-by-side
+   with `.impact__body` at ≥1200px (a 2-column grid) — a sidebar next
+   to the main paragraph.
+2. Konrad-review pass promoted it to a full-width, **centred** closing
+   block at the end of `.impact`: `margin-inline: auto` to centre it,
+   `text-align: center`, a single `border-top: 1px solid var(--accent)`
+   hairline replacing the old left border, and a large
+   `margin-top: var(--space-2xl)` (192px, stacking on top of the
+   section's own `row-gap: var(--space-l)`) meant to read as a clear
+   final beat.
+3. **That was reverted the same week** — the centred/top-bordered
+   treatment broke consistency with the rest of the page (metrics and
+   body paragraph are left-aligned; the site's accent-border motif is
+   vertical, used nowhere else as a horizontal rule) and the 192px+48px
+   gap read as a dead space, not a transition. Current state is back to
+   **left-aligned, 3px `border-left: var(--accent)` + `padding-left:
+   var(--space-m)`** (the original pre-#2 treatment), same
+   `max-width: 640px` reading column as `.impact__body`, no
+   `margin-inline`, no `text-align`. Spacing from the paragraph above
+   is a **single `--space-l` (48px)** — that's the section's own
+   `row-gap`, doing all the work; `.learned` has **no margin-top of its
+   own**. Don't add one, it'll double the gap the same way #2 did.
+
+What's still true from #2 and hasn't been reverted: `.impact__details`
+is gone — `.impact__body` is a direct grid child of `.impact`
+(`grid-column: 1/-1; max-width: 640px`, left-aligned), and `.learned`
+is also a direct grid child (not nested in a wrapper), sitting after it
+in DOM order. `.learned__body`'s old hardcoded `font-size: 17px` is
+still removed, so it still picks up the case-study-wide 18px body bump.
+
+If a case study's `.impact__body` paragraph runs long, split it into
+multiple `<p class="impact__body body">` siblings — no wrapper needed,
+each instance's own `margin-top: var(--space-m)` provides natural
+paragraph spacing from the one before it (Herakify's impact body is a
+2-paragraph example of this, split for the scannability pass — see
+below).
 
 ### Case-study body copy: 17px → 18px desktop, and other scannability fixes (Konrad-review pass, all three case studies)
 
@@ -508,9 +519,11 @@ pattern) → `.feature-bands` (full-bleed accent, opens with
 `.feature-band`, add `.feature-band--reverse` to alternate — see the
 "Section relabel" divergence) → `.impact` (marker `04 / Impact`,
 `.metric-block` ×3, `.impact__body` paragraph(s), then **`.learned`**
-as its own full-width centred closing block — see the "'What I
-Learned' moved to a full-width closing block" divergence, this is NOT
-the old side-by-side `.impact__details` layout anymore) →
+as its own left-aligned, left-bordered closing block directly beneath
+(single `--space-l` gap, no extra margin) — see the "'What I Learned'"
+divergence entry for the full history, this is NOT the old side-by-side
+`.impact__details` layout, and NOT the briefly-tried centred/top-border
+version either) →
 `.next-project` (bone-deep background) → the homepage's `.footer`,
 reused as-is.
 
