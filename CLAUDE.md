@@ -20,9 +20,15 @@ designed in Figma, built here, deployed on Vercel.
 
 ## Branches
 
-- `main` — v1, currently live. Do not touch until launch.
-- `redesign` — the rebuild branch. All redesign work goes here.
-- `v1-archive` — frozen v1 backup.
+- `main` — **the redesign is live here now** (merged from `redesign` via
+  `--no-ff`, then pushed). This is the Vercel Production Branch —
+  pushing it deploys to spencerhlewis.com. Branch off `main` for new
+  work (a short-lived feature branch, verify, then merge `--no-ff` back
+  into `main` and push) rather than committing to it directly.
+- `redesign` — the original rebuild branch. Fully merged into `main`;
+  kept around as history per standing instruction, not deleted. Treat
+  as frozen — new work branches off `main`, not this.
+- `v1-archive` — frozen v1 backup, from before the redesign.
 
 ## Source-of-truth documents (read these)
 
@@ -267,57 +273,161 @@ divergence is correct — the source doc is what's stale.
   non-reversed blocks. This lives in the shared `.feature-band--reverse`
   rule in `styles.css`, so it applies to all three case studies
   automatically — verified holding on Herakify, Harmony, and Yakabod.
-- **Challenge + Solution consolidated into one section, per case study
-  (template-level change, all three)** — see "Challenge + Solution
-  consolidation" below.
+- **Challenge + Research consolidated into one section, per case study
+  (template-level change, all three)** — see "Challenge + Research
+  consolidation" below. (Originally written when this second block was
+  still labelled "Solution" — see the section-relabel entry further
+  down for why it's now "Research" and where "Solution" actually
+  lives.)
 
-### Challenge + Solution consolidation (template-level, all three case studies)
+### Challenge + Research consolidation (template-level, all three case studies)
 
 Build-spec §7/§5.3 originally describes Challenge and Solution as two
 separate full-width sections (Challenge: text + image field; Solution:
 text + chips, no field, `.content-section--no-field`). The built
-template now merges them into **one scannable two-column beat**: the
-Challenge heading/marker/paragraph and the Solution heading/marker/
-paragraph/chips both sit stacked in the same left-hand text column,
-with the Challenge image on the right, roughly parallel in height to
-the combined text. `.content-section--no-field` and the second
-`<section>` are gone — there's only one `.content-section` per case
-study now, containing **three** direct grid children in this DOM order:
+template now merges the second block into the first as **one scannable
+two-column beat**: the Challenge heading/marker/paragraph and the
+second block's heading/marker/paragraph(s)/chips both sit stacked in
+the same left-hand text column, with the Challenge image on the right,
+roughly parallel in height to the combined text. `.content-section--no-field`
+and the second `<section>` are gone — there's only one `.content-section`
+per case study now, containing **three** direct grid children in this
+DOM order:
 
 ```html
 <section class="content-section grid reveal">
   <div class="content-section__text">          <!-- Challenge copy -->
   <div class="content-section__field two-tone-field">  <!-- image -->
-  <div class="content-section__text content-section__text--solution">  <!-- Solution copy + chips -->
+  <div class="content-section__text content-section__text--research">  <!-- Research copy + chips -->
 </section>
 ```
+
+(The modifier class is `.content-section__text--research` — renamed
+from `--solution` in the same pass that relabelled the section itself,
+see below. If you're grepping for it and only finding `--research`,
+that's correct, not a partial migration.)
 
 The image is a DOM sibling **between** the two text blocks, not nested
 inside either — this is deliberate, not incidental. It's what makes
 both layouts work with the same markup:
 
 - **Mobile (no explicit grid-row):** all three are `grid-column: 1/-1`
-  and just stack in DOM order — Challenge text → image → Solution
+  and just stack in DOM order — Challenge text → image → Research
   text+chips, matching the original mobile spec's order.
 - **Desktop (≥1200px):** `.content-section__text` gets
-  `grid-column:1/8; grid-row:1`, `.content-section__text--solution`
+  `grid-column:1/8; grid-row:1`, `.content-section__text--research`
   overrides to `grid-row:2` (same column, `margin-top: var(--space-l)`
   for a clear but tight break), and `.content-section__field` gets
   `grid-column:8/13; grid-row: 1 / span 2` — spanning both rows so its
   own square aspect-ratio height doesn't force row 1 to expand and
-  push the Solution block down away from the Challenge paragraph. This
+  push the second block down away from the Challenge paragraph. This
   was the key discovery: without the row-span, auto-placement (or even
   an explicit single `grid-row:1` on the field) makes row 1's height
   match the field's own square dimension, which is usually taller than
-  the short Challenge paragraph alone — leaving an ugly gap before
-  Solution starts. Spanning both rows lets the field sit tall on the
-  right while the text column flows tightly on the left, independent
-  of the field's height.
+  the short Challenge paragraph alone — leaving an ugly gap before the
+  second block starts. Spanning both rows lets the field sit tall on
+  the right while the text column flows tightly on the left,
+  independent of the field's height.
 
 If a 4th case study is ever built from this template, copy this
 three-child pattern exactly — don't reintroduce the two-section
 version, and don't collapse the image back into a single nested div
 inside the text block (that breaks the mobile stacking order).
+
+### Section relabel: Challenge / Research / Solution / Impact (template-level, all three case studies, Konrad-review pass)
+
+The section that used to read **"02 / Solution"** never actually
+described a solution — it's research and problem-framing (contextual
+inquiries, the persona, the design problem(s) that came out of it). The
+real solutions are the feature blocks underneath, which had no heading
+of their own. Fixed by renumbering the whole sequence so every label
+now matches the content beneath it:
+
+1. **`01 / Challenge`** — unchanged.
+2. **`02 / Research`** — the old "02 / Solution" block, renamed
+   (heading text, section-marker text, and the modifier class
+   `content-section__text--research`, see above). Still keeps the
+   skill chips.
+3. **`03 / Solution`** — new. The full-bleed accent `.feature-bands`
+   section previously had no marker/heading of its own; it now opens
+   with a `.feature-bands__intro` block (marker + `.feature-bands__heading`,
+   full container width, sitting directly above the first `.feature-band`)
+   before the three bands. Colour handling is inverted from the normal
+   `.section-marker` (which assumes a bone background): inside
+   `.feature-bands__intro` the numeral is `var(--ink)` and the slash+label
+   are `var(--bone)`, since the marker sits directly on the accent-coloured
+   band background — the shared `.section-marker` rule would otherwise
+   render the numeral in `var(--accent)` on a same-colour background and
+   vanish. `.feature-bands__intro + .feature-band` gets `padding-top: 0`
+   so the first band doesn't ALSO add its own full `padding-block`
+   on top of the intro's own spacing (would double up).
+4. **`04 / Impact`** — unchanged content, renumbered.
+
+If a 4th case study is ever built, copy this four-marker sequence, not
+the old three-marker one — `01 Challenge / 02 Research / 03 Solution /
+04 Impact`, with the Solution marker living in `.feature-bands__intro`
+rather than in the merged `.content-section`.
+
+### "What I Learned" moved to a full-width closing block (template-level, all three case studies, Konrad-review pass)
+
+Previously `.learned` sat inside `.impact__details`, side-by-side with
+`.impact__body` at ≥1200px (a 2-column grid) — a sidebar next to the
+main paragraph. Since it's the conclusion of the case study, it's been
+promoted to a full-width, **centred** block at the very end of
+`.impact`, after the metrics and body paragraph(s), with a generous
+`margin-top: var(--space-2xl)` (192px, plus the section's own
+`row-gap: var(--space-l)` on top of that — the two stack, which is
+intentional, it's meant to read as a clear final beat, not a
+continuation of the paragraph above it). `.impact__details` is gone
+entirely — `.impact__body` is now a direct grid child of `.impact`
+(`grid-column: 1/-1; max-width: 640px`, left-aligned same as every
+other paragraph on the page), and `.learned` is also a direct grid
+child, `max-width: 640px; margin-inline: auto` to centre it, with
+`text-align: center`. The old 3px `border-left: accent` callout-style
+border is gone too — replaced with a single `border-top: 1px solid
+var(--accent)` hairline above the block, read as a divider before the
+closing statement rather than a side-tab. `.learned__body`'s old
+hardcoded `font-size: 17px` was also removed (it was silently
+overriding the shared `.body` class it's also tagged with) so it picks
+up the case-study-wide 18px body bump below like everything else.
+
+If Herakify's/a case study's `.impact__body` paragraph runs long,
+split it into multiple `<p class="impact__body body">` siblings — no
+wrapper needed, each instance's own `margin-top: var(--space-m)`
+provides natural paragraph spacing from the one before it (Herakify's
+impact body is a 2-paragraph example of this, split for the
+scannability pass — see below).
+
+### Case-study body copy: 17px → 18px desktop, and other scannability fixes (Konrad-review pass, all three case studies)
+
+- **`.case-study .body { font-size: 18px }`** at ≥768px — scoped to
+  `.case-study` (not a change to the shared `.body` type-scale token)
+  so the homepage, About, and Multimedia's body text are unaffected.
+  The 640px `.reading-column` cap is untouched.
+- **Paragraphs over ~4 sentences got split into two** — currently only
+  Herakify's Research paragraph (5 sentences → persona-insight
+  paragraph + two-design-problems paragraph) and Herakify's Impact
+  body (5 short sentences → stages/measurement paragraph + a punchy
+  3-sentence closer). Harmony's Research paragraph was borderline (4
+  sentences) and got split too for consistency across the three case
+  studies, even though it didn't strictly need it. Yakabod's Research
+  and Impact paragraphs were already short enough (≤3 sentences) and
+  were left as single paragraphs.
+- **Each Research paragraph has 2–3 `<strong>` phrases** bolding the
+  core research insight and the resulting design problem(s) (Herakify's
+  literally is two explicit questions; Harmony's and Yakabod's are
+  bolded on the equivalent insight/problem-framing clauses even though
+  they're not phrased as questions in the original copy). Kept to the
+  2–3 max per the brief — don't add more per section, it stops reading
+  as emphasis and starts reading as noise.
+- **Nav dropped "Work"** (sitewide, all five pages) — it's now just
+  Home / About / Resume. Home already lands on `/`, which is where Work
+  scrolled to anyway (`/#work`), so the link was redundant. `About` is
+  unchanged, still `/#about`. This did **not** touch the case-study
+  "← Back" links or the Multimedia gallery's back link — both still
+  point to `/#work`, which still works fine as a same-page anchor
+  target even with no nav item pointing at it directly; `#work` the
+  section/id hasn't gone anywhere, only the nav's redundant link to it.
 
 ## Working method (follow this)
 
@@ -390,14 +500,19 @@ not squeezed between it and the title, see Intentional divergences —
 title, description, `.two-tone-field--intro` hero image) →
 `.details-strip` (4 hairline cells, self-adapting 1/2/4-column via the
 border-on-every-cell technique — see Gotchas) → **one consolidated
-`.content-section`** (Challenge + Solution merged — see "Challenge +
-Solution consolidation" divergence below for the full markup/CSS
-pattern) → `.feature-bands` (full-bleed accent, 3× `.feature-band`, add
-`.feature-band--reverse` to alternate) → `.impact` (`.section-marker`,
-`.metric-block` ×3, then **`.impact__details`** wrapping
-`.impact__body` + `.learned` side-by-side at ≥1200px — see Intentional
-divergences) → `.next-project` (bone-deep background) → the homepage's
-`.footer`, reused as-is.
+`.content-section`** holding markers `01 / Challenge` and
+`02 / Research` (Challenge + Research merged — see "Challenge +
+Research consolidation" divergence below for the full markup/CSS
+pattern) → `.feature-bands` (full-bleed accent, opens with
+`.feature-bands__intro` holding marker `03 / Solution`, then 3×
+`.feature-band`, add `.feature-band--reverse` to alternate — see the
+"Section relabel" divergence) → `.impact` (marker `04 / Impact`,
+`.metric-block` ×3, `.impact__body` paragraph(s), then **`.learned`**
+as its own full-width centred closing block — see the "'What I
+Learned' moved to a full-width closing block" divergence, this is NOT
+the old side-by-side `.impact__details` layout anymore) →
+`.next-project` (bone-deep background) → the homepage's `.footer`,
+reused as-is.
 
 **Routing:** `vercel.json` has `"cleanUrls": true`, so all three case
 study pages serve at both their `.html` path and the clean-URL form
@@ -426,22 +541,26 @@ pattern as `.case-study`.
 headed "Multimedia gallery — distinct page structure"):
 
 1. `.gallery-intro` — single column, no image field beside it (unlike
-   `.case-intro`). Order matches the reference exactly: back link →
-   category tag → mark → title → description. Note this is a
-   **different order from the case-study template's** intentional
-   mark-above-eyebrow divergence — Multimedia's mark sits *after* the
-   category tag, matching Figma's original order, because this page
-   was built fresh from the reference screenshot rather than
-   inheriting the case-study template's divergence.
+   `.case-intro`). Order is now **back link → mark → category tag →
+   title → description** — mark before the eyebrow, matching the
+   case-study template's own order (Konrad-review consistency pass;
+   previously this page had back → category → mark → title, its
+   original Figma-matched order, kept deliberately different from the
+   case-study divergence — that's now considered the inconsistency, not
+   the intentional choice, so it's been brought in line). The mark's
+   own `margin-top` was bumped from `var(--space-s)` to `var(--space-l)`
+   to match `.case-intro__content .project-mark`'s spacing exactly —
+   don't leave it at the old smaller value if you touch this again.
 2. `.details-strip.details-strip--3` — reuses the shared
    `.details-strip` component (already generic, used by every case
    study) with a `--3` modifier overriding to `repeat(3, 1fr)` at
    ≥1200px instead of the default `repeat(4, 1fr)`, since this page has
    three cells (Mediums / Tools / Years) not four.
 3. `.motion` — 16:9 image (`aspect-ratio: 16/9; object-fit: cover`),
-   caption row below (`.motion__caption`, flexbox
-   `justify-content: space-between` — title left, mono meta right),
-   description paragraph beneath that. `.motion__media` is capped at
+   caption below (`.motion__caption` — **stacked**: serif title, then
+   mono meta directly beneath it, no longer a flexbox title-left/
+   meta-right row, see the caption-unification note below), description
+   paragraph beneath that. `.motion__media` is capped at
    `max-width: 882px` (with `margin-inline: auto` to stay centred) —
    `multimedia-animation.png` is native 882×494, and at the section's
    full grid width (1584px at 1680px viewport) it was being upscaled
@@ -462,15 +581,49 @@ headed "Multimedia gallery — distinct page structure"):
    with `object-fit:cover`. Cropping to 3:2 was the first attempt and
    it cut the images down to two swatches and half a wordmark; the
    reference thumbnail shows the *entire* composition scaled down, not
-   a crop. Mono caption (Wordmark / Poster / Instrument) beneath each,
-   shared description paragraph below all three.
+   a crop. Each item now has a **title (`.triptych__title`, serif h2) +
+   meta (`.triptych__meta`, mono, reads "Colour + Type System" for all
+   three)** beneath it, matching the Motion/Illustration sections'
+   caption pattern (see below) — it used to be a single bare mono word
+   with no title at all. Shared description paragraph below all three
+   was also rewritten to state explicitly that these are directions
+   explored for **this site's own** design system and that Wordmark
+   (the first) is the one that actually got built — see the
+   "Multimedia caption + process framing" note below.
 5. `.illustration-photo` — the `.duo` asymmetric two-up
    (`multimedia-ink.jpg` + `multimedia-stage.jpeg`), `grid-template-
    columns: 3fr 2fr` ≥900px with `.duo__item--offset` (the second item)
    getting `margin-top: 64px` per build-spec §5.4's offset. Below
    900px it drops to a single column with no offset, 64px gap between
    items (`gap: var(--space-2xl)`). Each item has its own title/meta/
-   description in a `<figcaption>`.
+   description in a `<figcaption>` — **this section was already the
+   reference implementation** for the caption system the other two
+   sections were brought in line with (see below).
+
+### Multimedia caption unification + process framing (Konrad-review pass)
+
+The three sections used three different caption treatments: Motion had
+a title+meta *row* (flexbox, space-between) with a separate description
+paragraph; the triptych had only a single bare mono word per image, no
+title, no per-item description; the duo section had a stacked
+title → meta → description in a `<figcaption>`. Unified all three to
+the duo section's pattern — **serif title, mono meta directly beneath,
+then body description** (the triptych still shares one description
+across all three items rather than getting per-item ones, since
+they're three variations on one theme, not three independent pieces —
+that's an intentional difference in content model, not a leftover
+inconsistency). Concretely: `.motion__caption` dropped its
+`display:flex; justify-content:space-between` (was a row) in favour of
+plain block stacking; the triptych's old single `.triptych__caption`
+class was replaced with `.triptych__title` (serif, `h2`) +
+`.triptych__meta` (mono, muted) inside each `<figcaption>`.
+
+Also rewrote the Visual Systems intro paragraph to read as **design-
+process evidence** rather than plain illustration: it now names all
+three directions (Wordmark / Poster / Instrument) explicitly and states
+outright that Wordmark — the first — is the one that got built into
+the live site, rather than the earlier, more oblique "the first one is
+what you're looking at" phrasing.
 
 **Grid-blowout gotcha hit while building this:** giving triptych/duo
 items `width:100%` on the `<img>` was not enough to keep them inside
@@ -693,40 +846,59 @@ now use the `.html` form** (`herakify.html` / `harmony.html` /
 **All three case-study pages are built and consolidated**:
 `herakify.html` (the original, and the reusable template — see "Case
 study template" above), `harmony.html` and `yakabod.html` (both cloned
-from it — same structural pattern, content/accent/asset swaps, now
-including the merged Challenge+Solution section, see "Challenge +
-Solution consolidation" above). All three are wired together and into
-the homepage using the `.html` link form (Herakify → Harmony → Yakabod
-→ Herakify, `.next-project` teasers all point the right direction).
-Harmony's `harmony-profile-2.png` / `harmony-events-2.png` and
-Yakabod's `yak-challenge-2.png` got the same corner-transparency/
-rebuild-plus-rename pattern as `harmony-match-2.png` and
-`herakify-map-2.png` before them (five instances of this pattern now —
-see Gotchas for the flood-fill technique if a sixth comes up). `vercel.json`
-has `"cleanUrls": true` so the clean `/herakify` / `/harmony` / `/yakabod`
-paths resolve once actually deployed to Vercel; this remains unverified
-against a live deploy in this session (`vercel dev` needs a login this
-environment doesn't have) — the `.html` links work regardless of that.
+from it — same structural pattern, content/accent/asset swaps). All
+three now carry the Konrad-review polish pass too (see the three
+divergence entries above: section relabel to Challenge/Research/
+Solution/Impact, "What I Learned" as a full-width closing block, and
+the 18px body bump + paragraph splits/bolding) — all template-level, so
+all three stayed in sync automatically or via mirrored edits. All three
+are wired together and into the homepage using the `.html` link form
+(Herakify → Harmony → Yakabod → Herakify, `.next-project` teasers all
+point the right direction). Harmony's `harmony-profile-2.png` /
+`harmony-events-2.png` and Yakabod's `yak-challenge-2.png` got the same
+corner-transparency/rebuild-plus-rename pattern as `harmony-match-2.png`
+and `herakify-map-2.png` before them (five instances of this pattern
+now — see Gotchas for the flood-fill technique if a sixth comes up).
 See Gotchas for implementation notes and **Intentional divergences from
 build-spec / Figma** above for what's deliberately off-spec and why.
 
-**The Multimedia gallery (`multimedia.html`) is now built** — a distinct
-page structure, not a case-study template clone. See "Multimedia
-gallery — distinct page structure" above for its sections and gotchas.
+**The Multimedia gallery (`multimedia.html`) is built** — a distinct
+page structure, not a case-study template clone — and has also had its
+own consistency pass (mark/eyebrow order matched to the case studies,
+caption system unified across all three sections, Visual Systems intro
+rewritten as process evidence). See "Multimedia gallery — distinct page
+structure" above for its sections and gotchas.
 
-**Resume link fixed:** every page's nav AND footer "Resume" link now
-points to `spencer-lewis-design-resume.pdf` (Spencer's newer resume,
-with small edits, pulled in from `~/Desktop/portfolio assets/` — that
-folder is where Spencer stages new assets before they're brought into
-the repo, worth checking there first for future asset requests). The
-file actually lives at the **project root**, not in `assets/` — same
-place the old `resume.pdf` was, despite build-spec/task language
-sometimes calling it an "assets/" file. The old `resume.pdf` is left in
-place, untouched and fully unreferenced (confirmed via grep across all
-HTML/JSON) — don't delete it without being asked, but don't wire
-anything to it either.
+**Resume link fixed:** every page's nav AND footer "Resume" link points
+to `spencer-lewis-design-resume.pdf` (Spencer's newer resume, with
+small edits, pulled in from `~/Desktop/portfolio assets/` — that folder
+is where Spencer stages new assets before they're brought into the
+repo, worth checking there first for future asset requests). The file
+actually lives at the **project root**, not in `assets/` — same place
+the old `resume.pdf` was, despite build-spec/task language sometimes
+calling it an "assets/" file. The old `resume.pdf` is left in place,
+untouched and fully unreferenced — don't delete it without being
+asked, but don't wire anything to it either.
+
+**Nav is now Home / About / Resume** (sitewide) — "Work" was dropped,
+see the Intentional divergences entry above. Case-study/Multimedia
+"← Back" links are unaffected, still `/#work`.
+
+**The site is live in production.** `redesign` was merged into `main`
+with `--no-ff` and pushed — Vercel auto-deploys `main` to
+spencerhlewis.com. `redesign` and `v1-archive` were both kept as
+branches (not deleted) per standing instruction, purely as history at
+this point; all new work should branch off `main` going forward, not
+off the now-merged `redesign`. `vercel.json` has `"cleanUrls": true` so
+the clean `/herakify` / `/harmony` / `/yakabod` paths resolve on the
+live deploy. The current Konrad-review polish pass above was done on
+its own short-lived branch off `main`, verified, then merged and pushed
+the same way — follow that same pattern (branch → verify at
+1200/1349/1680/390 → merge `--no-ff` into `main` → push) for any future
+change now that the site is live, rather than committing straight to
+`main`.
 
 **Run `git log`/`git status` to see what is committed versus still in the
 working tree, and commit anything uncommitted before continuing.**
 
-Not started: mobile refinement beyond the hamburger, and deploy.
+Not started: mobile refinement beyond the hamburger.
