@@ -1365,9 +1365,12 @@ body {
   border-radius: var(--radius-sm);
   /* multimedia-animation.png is native 882x494 — capping here keeps it at
      or under 1x so it doesn't upscale/soften; see CLAUDE.md. A higher-res
-     export would be needed to safely go wider or support retina. */
+     export would be needed to safely go wider or support retina.
+     Left-aligned (no margin-inline: auto) to match the title/caption/
+     description below it, which sit at the section's own left edge —
+     centering this narrower-than-column block was creating a visual
+     mismatch against them. */
   max-width: 882px;
-  margin-inline: auto;
 }
 
 .motion__media img {

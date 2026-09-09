@@ -633,17 +633,23 @@ headed "Multimedia gallery — distinct page structure"):
    mono meta directly beneath it, no longer a flexbox title-left/
    meta-right row, see the caption-unification note below), description
    paragraph beneath that. `.motion__media` is capped at
-   `max-width: 882px` (with `margin-inline: auto` to stay centred) —
-   `multimedia-animation.png` is native 882×494, and at the section's
-   full grid width (1584px at 1680px viewport) it was being upscaled
-   ~1.8x, rendering visibly soft/pixelated. Capping at native width
-   keeps it at 1.0x on every desktop breakpoint (confirmed 1200/1349/
-   1680 all render at exactly 882px now); mobile still scales it down,
-   which never causes blur. **This is a resolution ceiling, not just a
-   style choice** — if the section is ever widened further, or needs to
-   look sharp on retina displays (which would need 1764px+ to stay
-   crisp at 2x), a higher-resolution export of the animation still
-   needs to come from Spencer. Don't quietly raise the cap without one.
+   `max-width: 882px` — `multimedia-animation.png` is native 882×494,
+   and at the section's full grid width (1584px at 1680px viewport) it
+   was being upscaled ~1.8x, rendering visibly soft/pixelated. Capping
+   at native width keeps it at 1.0x on every desktop breakpoint
+   (confirmed 1200/1349/1680 all render at exactly 882px now); mobile
+   still scales it down, which never causes blur. **This is a
+   resolution ceiling, not just a style choice** — if the section is
+   ever widened further, or needs to look sharp on retina displays
+   (which would need 1764px+ to stay crisp at 2x), a higher-resolution
+   export of the animation still needs to come from Spencer. Don't
+   quietly raise the cap without one. **No `margin-inline: auto`** —
+   it originally had one to centre the capped block, but that put the
+   image at a different left edge than the title/caption/description
+   beneath it (which sit at the section's own left edge), reading as
+   misaligned. Left-aligned now, same edge as everything else in the
+   section — the `max-width` cap alone is enough to prevent upscaling,
+   centring was never required for that purpose.
 4. `.visual-systems` — the `.triptych` (3-column grid ≥768px, single
    column + 32px gap below that). **Important:** the three
    `design-system-*.png` files are full moodboard compositions (colour
