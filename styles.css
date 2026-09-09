@@ -1207,11 +1207,11 @@ body {
 }
 
 /* Closing block — the conclusion of the case study, read as a
-   pull-quote (distinct in KIND from "Impact", not just smaller): a
-   large decorative quote mark behind the text, italic Instrument
-   Serif at body-l size, no border/rule/panel. Left-aligned, same left
-   edge as the paragraph above. See CLAUDE.md ("What I Learned") for
-   the template-level history. */
+   reflection distinct in KIND from "Impact" (italic + eyebrow, not a
+   size competition): italic Instrument Serif at body-l size, no
+   border/rule/panel/decoration. Left-aligned, same left edge as the
+   paragraph above. See CLAUDE.md ("What I Learned") for the
+   template-level history. */
 .learned {
   grid-column: 1 / -1;
   max-width: 700px;
@@ -1226,7 +1226,6 @@ body {
 }
 
 .learned__body {
-  position: relative;
   font-family: "Instrument Serif", serif;
   font-style: italic;
   font-weight: 400;
@@ -1236,36 +1235,9 @@ body {
   margin-top: var(--space-s);
 }
 
-/* Decorative quote mark — purely visual texture, not content, so it's
-   a ::before rather than a real character (nothing for a screen
-   reader to announce). Mobile: sits inline, above the text, in normal
-   flow, small enough not to crowd it. Desktop: grows large and moves
-   behind/left of the text via absolute positioning — see the 768px
-   override below. */
-.learned__body::before {
-  content: "\201C";
-  display: block;
-  font-family: "Instrument Serif", serif;
-  font-style: normal;
-  font-size: 56px;
-  line-height: 1;
-  color: var(--accent);
-  opacity: 0.16;
-  margin-bottom: var(--space-2xs);
-}
-
 @media (min-width: 768px) {
   .learned__body {
     font-size: 20px;
-  }
-
-  .learned__body::before {
-    position: absolute;
-    top: -0.05em;
-    left: -0.15em;
-    font-size: 120px;
-    margin-bottom: 0;
-    pointer-events: none;
   }
 }
 

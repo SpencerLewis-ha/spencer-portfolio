@@ -368,9 +368,9 @@ the old three-marker one — `01 Challenge / 02 Research / 03 Solution /
 04 Impact`, with the Solution marker living in `.feature-bands__intro`
 rather than in the merged `.content-section`.
 
-### "What I Learned" — pull-quote treatment (template-level, all three case studies)
+### "What I Learned" — italic reflection, no decorative mark (template-level, all three case studies)
 
-**History, in order — this component has been through five rounds, so
+**History, in order — this component has been through six rounds, so
 don't re-litigate an earlier one blind:**
 
 1. Originally `.learned` sat inside `.impact__details`, side-by-side
@@ -392,27 +392,33 @@ don't re-litigate an earlier one blind:**
    `.learned__body` at the shared `.h2` sizing (28px/36px) with its own
    `line-height: 1.3`, `max-width: 1000px` on `.learned`. Hierarchy:
    metrics (56px) → this statement (36px) → paragraph (18px).
-5. **Current: pull-quote treatment.** The large-serif-statement version
+5. **Pull-quote treatment, since removed (round 6) — kept here as
+   history, not current state.** The large-serif-statement version
    competed with "Impact" in size rather than reading as distinct in
-   *kind*, so it's been replaced: `.learned__body` dropped back down to
-   body-l sizing (`17px` mobile / `20px` desktop) but set in *italic*
-   Instrument Serif — italic is what signals "reflection/quote" now,
-   not size. `.learned`'s `max-width` came down to `700px` (a comfortable
-   italic-text measure, not a big-statement one). A decorative opening
-   quote mark (`\201C`, `.learned__body::before`) sits behind/left of
-   the text: `var(--accent)` at `0.16` opacity, so it reads as texture
-   not color; `aria-hidden` by construction since it's a `::before`,
-   nothing for a screen reader to announce. It's `56px` and sits
-   **static, in normal flow, above the text** by default (mobile-safe:
-   can't crowd or overlap anything since it's not positioned) — at
-   ≥768px it becomes `position: absolute`, grows to `120px`, and moves
-   to `top: -0.05em; left: -0.15em` relative to `.learned__body`,
-   bleeding slightly up-left behind the first line of text. Spacing
-   arithmetic (margin-top / row-gap summing to `--space-xl` above) and
-   the "no margin-bottom, section's own padding handles the space
-   before Next Project" logic from round 4 are unchanged.
+   *kind*, so `.learned__body` dropped back down to body-l sizing
+   (`17px` mobile / `20px` desktop) in *italic* Instrument Serif, and a
+   decorative opening quote mark (`\201C`, `.learned__body::before`)
+   was added behind/left of the text at `var(--accent)` `0.16` opacity
+   — static/in-flow above the text on mobile, `position: absolute` and
+   `120px` at ≥768px. `.learned`'s `max-width` came down to `700px`
+   (a comfortable italic-text measure, not a big-statement one) — this
+   part **did** carry forward to round 6, see below.
+6. **Current: same italic reflection, mark removed entirely.** The
+   quote glyph was judged unnecessary — the italic body-l text plus the
+   accent-coloured "WHAT I LEARNED" eyebrow above it is enough on its
+   own to read as a distinct reflection beat, per direct instruction.
+   `.learned__body::before` and its `≥768px` override are both deleted
+   outright (not hidden, not zeroed-out — removed from the stylesheet).
+   Everything else from round 5 is unchanged: italic Instrument Serif,
+   `17px`/`20px`, `var(--ink)`, `700px` max-width, left-aligned to the
+   paragraph column, `var(--accent)` eyebrow above it, `--space-xl`
+   total gap from the paragraph above (via `.learned`'s own
+   `margin-top: var(--space-l)` plus the section's `row-gap`). If a
+   decorative mark is ever requested again, the round 5 entry above has
+   the exact values and the two gotchas below still apply.
 
-**Gotcha hit implementing round 5, positioning the quote mark:** the
+**Gotcha hit implementing round 5's (now-removed) quote mark, kept for
+next time one gets added back:** the
 first attempt used `top: -0.5em; left: -0.65em; z-index: -1` at 120px,
 which computed to `-60px`/`-78px` — since `.learned__body`'s own left
 edge is only 48px from the viewport edge (the standard container
@@ -568,14 +574,15 @@ pattern) → `.feature-bands` (full-bleed accent, opens with
 `.feature-band`, add `.feature-band--reverse` to alternate — see the
 "Section relabel" divergence) → `.impact` (marker `04 / Impact`,
 `.metric-block` ×3, `.impact__body` paragraph(s), then **`.learned`**
-as a pull-quote (no border/panel, accent lives in the eyebrow label and
-a low-opacity decorative quote-mark `::before` only, italic Instrument
+as an italic reflection with no decoration at all (no border/panel/
+quote-mark — accent lives in the eyebrow label only, italic Instrument
 Serif at body-l sizing, `--space-xl` gap from the paragraph above) —
-see the "'What I Learned'" divergence entry for the full five-round
+see the "'What I Learned'" divergence entry for the full six-round
 history, this is NOT the old side-by-side `.impact__details` layout,
 NOT the briefly-tried centred/top-border version, NOT the left-border
-callout that came after that, and NOT the large-serif-statement version
-that came after *that* either) →
+callout that came after that, NOT the large-serif-statement version
+after *that*, and NOT the pull-quote-with-decorative-mark version that
+came after *that* either) →
 `.next-project` (bone-deep background) → the homepage's `.footer`,
 reused as-is.
 
