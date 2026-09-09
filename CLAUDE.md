@@ -368,9 +368,9 @@ the old three-marker one — `01 Challenge / 02 Research / 03 Solution /
 04 Impact`, with the Solution marker living in `.feature-bands__intro`
 rather than in the merged `.content-section`.
 
-### "What I Learned" — large serif closing statement (template-level, all three case studies)
+### "What I Learned" — pull-quote treatment (template-level, all three case studies)
 
-**History, in order — this component has been through four rounds, so
+**History, in order — this component has been through five rounds, so
 don't re-litigate an earlier one blind:**
 
 1. Originally `.learned` sat inside `.impact__details`, side-by-side
@@ -387,42 +387,64 @@ don't re-litigate an earlier one blind:**
    var(--space-m)`**, `max-width: 640px`, spacing trimmed to a single
    `--space-l` (relying on the section's own `row-gap`, no margin-top
    of its own).
-4. **Current: bordered-callout treatment removed entirely, restyled as
-   a large serif statement** — no border, no rule, no panel of any
-   kind. The accent now lives *only* in the eyebrow label
-   (`.learned__label { color: var(--accent) }`), matching how every
-   other section marker on the page carries the accent in its numeral
-   rather than in a box or line. `.learned__body` is no longer styled
-   as body copy — it's `font-family: "Instrument Serif"`, the same
-   `28px` mobile / `36px` desktop sizing as the shared `.h2` token, but
-   with its own `line-height: 1.3` (h2's default 1.2 was too tight for
-   a multi-line paragraph-length statement) and `max-width: 1000px` (on
-   `.learned` itself) so it runs wider than the 640px body column and
-   fills the right-hand space without ever going edge-to-edge. Spacing
-   from the paragraph above reads as a full `--space-xl` (96px) —
-   `.learned`'s own `margin-top: var(--space-l)` (48px) plus the
-   section's automatic `row-gap: var(--space-l)` (48px) sum to that;
-   same "don't just add `--space-xl` directly, account for the
-   row-gap" arithmetic as round 3's `--space-l` target, just scaled up.
-   Intended hierarchy for the whole `.impact` section, largest to
-   smallest: metrics (`56px` serif numerals) → this closing statement
-   (`36px` serif) → body paragraph (`18px`) — the reflection is
-   deliberately the second-largest text in the section, clearly bigger
-   than the paragraph it follows.
+4. Bordered-callout treatment removed entirely, restyled as a large
+   serif statement — no border, accent in the eyebrow label only,
+   `.learned__body` at the shared `.h2` sizing (28px/36px) with its own
+   `line-height: 1.3`, `max-width: 1000px` on `.learned`. Hierarchy:
+   metrics (56px) → this statement (36px) → paragraph (18px).
+5. **Current: pull-quote treatment.** The large-serif-statement version
+   competed with "Impact" in size rather than reading as distinct in
+   *kind*, so it's been replaced: `.learned__body` dropped back down to
+   body-l sizing (`17px` mobile / `20px` desktop) but set in *italic*
+   Instrument Serif — italic is what signals "reflection/quote" now,
+   not size. `.learned`'s `max-width` came down to `700px` (a comfortable
+   italic-text measure, not a big-statement one). A decorative opening
+   quote mark (`\201C`, `.learned__body::before`) sits behind/left of
+   the text: `var(--accent)` at `0.16` opacity, so it reads as texture
+   not color; `aria-hidden` by construction since it's a `::before`,
+   nothing for a screen reader to announce. It's `56px` and sits
+   **static, in normal flow, above the text** by default (mobile-safe:
+   can't crowd or overlap anything since it's not positioned) — at
+   ≥768px it becomes `position: absolute`, grows to `120px`, and moves
+   to `top: -0.05em; left: -0.15em` relative to `.learned__body`,
+   bleeding slightly up-left behind the first line of text. Spacing
+   arithmetic (margin-top / row-gap summing to `--space-xl` above) and
+   the "no margin-bottom, section's own padding handles the space
+   before Next Project" logic from round 4 are unchanged.
 
-**Gotcha hit implementing round 4:** `.learned__body` still carried
-`class="body"` in the markup (left over from when it *was* styled as
-body copy). `.case-study .body { font-size: 18px }` (a compound
-selector, specificity (0,2,0)) silently overrode `.learned__body`'s own
-new `font-size` (a single class, specificity (0,1,0)) back down to
-18px — same kind of specificity trap as the details-strip border bug,
-just in font-size instead of border position. Fixed by removing the
-`body` class from the `<p class="learned__body">` markup entirely in
-all three case studies, since it's genuinely not body copy anymore.
-**If `.learned__body`'s size ever looks wrong again, check the class
-list on the element before touching the CSS** — a stray shared class
-with higher-specificity compound selectors elsewhere is the likely
-cause, not the rule you're looking at.
+**Gotcha hit implementing round 5, positioning the quote mark:** the
+first attempt used `top: -0.5em; left: -0.65em; z-index: -1` at 120px,
+which computed to `-60px`/`-78px` — since `.learned__body`'s own left
+edge is only 48px from the viewport edge (the standard container
+gutter), an `-78px` left offset pushed most of the glyph's box past
+`x: 0`, off the left edge of the viewport entirely, and it rendered as
+invisible. **Em-based offsets on a decorative pseudo-element need to be
+sized relative to how much real gutter space actually exists next to
+the element, not chosen by feel** — an offset that reads as "a tasteful
+bleed into the margin" at a wide container edge can push a large-font
+pseudo-element fully off-canvas at a narrower one. Also removed the
+`z-index: -1` entirely: it isn't needed (the pseudo-element's content
+paints before the parent element's own text content in the same
+stacking context, so the italic text naturally paints over the
+low-opacity mark without any z-index at all), and `z-index: -1` on a
+`position: relative` parent with `z-index: auto` doesn't reliably
+create the isolated stacking context you'd expect — it very likely
+contributed to the mark rendering behind other page content and
+disappearing along with the offset bug. Settled on `top: -0.05em;
+left: -0.15em` (barely pulled off the text's own top-left corner,
+overlapping the cap-height of the first letter slightly) after
+iterating with actual screenshots — don't try to compute "correct"
+offsets analytically for a decorative overlap like this, just look at
+it and adjust.
+
+**Gotcha carried over from round 4:** `.learned__body` must not carry
+the shared `body` class — `.case-study .body { font-size: 18px }` (a
+compound selector) has higher specificity than any single-class rule
+on `.learned__body` and will silently override its font-size. Round 4
+already removed this class from the markup; round 5 kept it removed
+and hardcoded all of `.learned__body`'s type properties directly
+instead of composing from `.body`/`.body-l` tokens, to sidestep the
+whole class of bug rather than re-fight it.
 
 `.impact__details` is gone (removed in round 2, still gone) —
 `.impact__body` is a direct grid child of `.impact` (`grid-column:
@@ -546,13 +568,14 @@ pattern) → `.feature-bands` (full-bleed accent, opens with
 `.feature-band`, add `.feature-band--reverse` to alternate — see the
 "Section relabel" divergence) → `.impact` (marker `04 / Impact`,
 `.metric-block` ×3, `.impact__body` paragraph(s), then **`.learned`**
-as a large serif closing statement (no border/rule/panel, accent lives
-in the eyebrow label only, `36px`/`28px` Instrument Serif body text,
-`--space-xl` gap from the paragraph above) — see the "'What I
-Learned'" divergence entry for the full four-round history, this is
-NOT the old side-by-side `.impact__details` layout, NOT the
-briefly-tried centred/top-border version, and NOT the left-border
-callout that came after that either) →
+as a pull-quote (no border/panel, accent lives in the eyebrow label and
+a low-opacity decorative quote-mark `::before` only, italic Instrument
+Serif at body-l sizing, `--space-xl` gap from the paragraph above) —
+see the "'What I Learned'" divergence entry for the full five-round
+history, this is NOT the old side-by-side `.impact__details` layout,
+NOT the briefly-tried centred/top-border version, NOT the left-border
+callout that came after that, and NOT the large-serif-statement version
+that came after *that* either) →
 `.next-project` (bone-deep background) → the homepage's `.footer`,
 reused as-is.
 
